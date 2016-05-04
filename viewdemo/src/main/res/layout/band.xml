@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="40dp"
+              android:background="@color/actionbarColor"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+    
+    <LinearLayout
+        android:id="@+id/vertical_bar2"
+        android:layout_width="4dp"
+        android:layout_height="16dp"
+        android:background="@color/text_color1"
+        android:orientation="vertical"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/tv_band_title"
+        android:textSize="@dimen/text_size_12"
+        android:layout_width="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="6dp"
+        android:textColor="@color/text_color1"
+        android:text="@string/game_data"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

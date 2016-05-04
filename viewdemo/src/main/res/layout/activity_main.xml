@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".module.home.activity.MainActivity">
+
+        <RadioGroup
+            android:id="@+id/ll_tab"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_me"
+                style="@style/rbTextStyle"
+                android:drawableTop="@drawable/tab_01_bg"
+                android:text="@string/me"/>
+
+            <RadioButton
+                android:id="@+id/rb_home"
+                style="@style/rbTextStyle"
+                android:drawableTop="@drawable/tab_02_bg"
+                android:text="@string/data"/>
+
+            <RadioButton
+                android:id="@+id/rb_discovery"
+                style="@style/rbTextStyle"
+                android:drawableTop="@drawable/tab_03_bg"
+                android:text="@string/discovery"/>
+
+            <RadioButton
+                android:id="@+id/rb_video"
+                style="@style/rbTextStyle"
+                android:drawableTop="@drawable/tab_04_bg"
+                android:text="@string/video"/>
+
+        </RadioGroup>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/ll_tab"
+            android:layout_below="@+id/toolbar">
+        </android.support.v4.view.ViewPager>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_header"
+        android:layout_gravity="start">
+
+    </RelativeLayout>
+</android.support.v4.widget.DrawerLayout>

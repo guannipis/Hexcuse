@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Hexcuse.iml" filepath="$PROJECT_DIR$/Hexcuse.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/okhttpclientmanager/okhttpclientmanager.iml" filepath="$PROJECT_DIR$/okhttpclientmanager/okhttpclientmanager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/viewdemo/viewdemo.iml" filepath="$PROJECT_DIR$/viewdemo/viewdemo.iml" />
+    </modules>
+  </component>
+</project>
