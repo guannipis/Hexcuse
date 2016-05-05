@@ -1,20 +1,8 @@
 package com.example.viewdemo.module.home.activity;
 
-import android.support.v4.app.FragmentActivity;
-
-/**
- * 主页面，采用Fragment＋viewpager＋RadioButton
- *
- */
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SwitchCompat;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RadioButton;
 
@@ -25,6 +13,10 @@ import com.example.viewdemo.module.home.fragment.DataFragment;
 import com.example.viewdemo.module.home.fragment.DiscoveryFragment;
 import com.example.viewdemo.module.home.fragment.MeFragment;
 import com.example.viewdemo.module.home.fragment.VideoFragment;
+
+/**
+ * 主页面，采用Fragment＋viewpager＋RadioButton
+ */
 
 public class MainActivity extends BaseFragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
