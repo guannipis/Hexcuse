@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
@@ -14,12 +13,20 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 public class MainActivity extends Activity {
 
+	private String click;
+	private String title;
 	private TextView tv;
 	private Button btn;
+//	private static String URL = "http://news.maxjia.com/maxnews/app/list/?&offset=0&limit=2";
+	private static String URL = "http://news.maxjia.com/maxnews/app/list/?&offset=0&limit=2";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +47,7 @@ public class MainActivity extends Activity {
 		OkHttpClient mOkHttpClient = new OkHttpClient();
 //创建一个Request
 		final Request request = new Request.Builder()
-				.url("https://www.baidu.com/")
+				.url(URL)
 				.build();
 //new call
 		Call call = mOkHttpClient.newCall(request);
@@ -53,12 +60,21 @@ public class MainActivity extends Activity {
 			@Override
 			public void onResponse(final Response response) throws IOException {
 				if(response.isSuccessful()){
-					Log.i("response===", response.body().string());
-					final String res = response.body().string();
+					String res = response.body().string();
+					Log.d("res===", res);
+					try {
+						JSONArray array = new JSONObject(res).getJSONArray("result");
+						JSONObject object = array.getJSONObject(1);
+						click = object.getString("click");
+						title = object.getString("title");
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							Toast.makeText(MainActivity.this, res, Toast.LENGTH_SHORT).show();
+//							Toast.makeText(MainActivity.this, res, Toast.LENGTH_SHORT).show();
+							tv.setText(title);
 						}
 					});
 
