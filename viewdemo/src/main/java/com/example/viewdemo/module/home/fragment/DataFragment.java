@@ -2,14 +2,30 @@ package com.example.viewdemo.module.home.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.base.BaseFragment;
+import com.example.viewdemo.common.bean.Constants;
+import com.example.viewdemo.common.bean.DataListViewBean;
+import com.example.viewdemo.module.home.adapter.DataLvAdapter;
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
@@ -26,6 +42,10 @@ public class DataFragment extends BaseFragment implements View.OnClickListener{
 	private LinearLayout ll_ladder;
 	private LinearLayout ll_data;
 	private LinearLayout ll_league;
+	private ListView data_lv;
+	private DataLvAdapter mDataLvAdapter;
+	private List<DataListViewBean.ResultBean.ActivityListBean> activityList;
+	private DataListViewBean.ResultBean.ActivityListBean mActivityListBean;
 
 	@Nullable
 	@Override
@@ -57,9 +77,15 @@ public class DataFragment extends BaseFragment implements View.OnClickListener{
         // default is true
 		mPtrFrameLayout.setKeepHeaderWhenRefresh(true);
 
+
 //		mPtrFrameLayout.autoRefresh();
 //		final StoreHouseHeader header = new StoreHouseHeader(getContext());
 //		header.setPadding(0, PtrLocalDisplay.designedDP2px(15), 0, 0);
+		activityList = new ArrayList<>();
+		getData();
+		mDataLvAdapter = new DataLvAdapter(getContext());
+		mDataLvAdapter.addList(activityList);
+		data_lv.setAdapter(mDataLvAdapter);
 	}
 
 	private void setListener(){
@@ -75,13 +101,8 @@ public class DataFragment extends BaseFragment implements View.OnClickListener{
 
 	@Override
 	public void onRefreshBegin(final PtrFrameLayout frame) {
-		frame.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				Log.i("auto====","auto");
-				frame.refreshComplete();
-			}
-		}, 1800);
+		getData();
+		frame.refreshComplete();
 	}
 
 	@Override
@@ -100,5 +121,35 @@ public class DataFragment extends BaseFragment implements View.OnClickListener{
 			case R.id.ll_league:
 				break;
 		}
+	}
+
+	private void getData(){
+		OkHttpClient okHttpClient = new OkHttpClient();
+		Request request = new Request.Builder().url(Constants.Data_URL).build();
+		Call call = okHttpClient.newCall(request);
+		call.enqueue(new Callback() {
+			@Override
+			public void onFailure(Request request, IOException e) {
+
+			}
+
+			@Override
+			public void onResponse(Response response) throws IOException {
+				if(response.isSuccessful()){
+					try {
+						JSONArray array = new JSONObject(response.body().string()).getJSONArray("result");
+						for(int i = 0; i <= array.length(); i++){
+							JSONObject object = array.getJSONObject(i);
+							mActivityListBean = new DataListViewBean.ResultBean.ActivityListBean();
+							mActivityListBean.setContent(object.getString("content"));
+							mActivityListBean.setTitle(object.getString("title"));
+							activityList.add(mActivityListBean);
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
 	}
 }

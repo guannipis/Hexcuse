@@ -212,11 +212,13 @@
 
             <include layout="@layout/band"/>
 
-            <TextView
+            <ListView
+                android:id="@+id/data_lv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="this is data"/>
+                android:layout_height="wrap_content">
+
+            </ListView>
+
         </LinearLayout>
 
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
