@@ -2,12 +2,7 @@ package com.example.viewdemo.common.base;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.Stack;
 
 /**

@@ -11,216 +11,222 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/band"/>
-
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="75dp"
-                android:background="@color/white"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/band"/>
+
 
                 <LinearLayout
-                    android:id="@+id/ll_hero"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/ll_hero"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/heronew"/>
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/hero"
-                        android:textColor="@color/text_color1"
-                        android:textSize="12.0sp"
-                        android:typeface="sans"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/heronew"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/hero"
+                            android:textColor="@color/text_color1"
+                            android:textSize="12.0sp"
+                            android:typeface="sans"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/vertial_bar"/>
+
+                    <LinearLayout
+                        android:id="@+id/ll_rank"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/herorank"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/hero_rank"
+                            android:textColor="@color/text_color1"
+                            android:textSize="12.0sp"
+                            android:typeface="sans"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/vertial_bar"/>
+
+                    <LinearLayout
+                        android:id="@+id/ll_item"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/itemnew"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/item"
+                            android:textColor="@color/text_color1"
+                            android:textSize="12.0sp"
+                            android:typeface="sans"/>
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
                     android:background="@color/vertial_bar"/>
 
                 <LinearLayout
-                    android:id="@+id/ll_rank"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/ll_ladder"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/herorank"/>
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/hero_rank"
-                        android:textColor="@color/text_color1"
-                        android:textSize="12.0sp"
-                        android:typeface="sans"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/laddernew"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/ladder"
+                            android:textColor="@color/text_color1"
+                            android:textSize="12.0sp"
+                            android:typeface="sans"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/vertial_bar"/>
+
+                    <LinearLayout
+                        android:id="@+id/ll_data"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/prodatanew"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/professional_data"
+                            android:textColor="@color/text_color1"
+                            android:textSize="12.0sp"
+                            android:typeface="sans"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/vertial_bar"/>
+
+                    <LinearLayout
+                        android:id="@+id/ll_league"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/leaguematch"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/league"
+                            android:textColor="@color/text_color1"
+                            android:textSize="12.0sp"
+                            android:typeface="sans"/>
+                    </LinearLayout>
+
                 </LinearLayout>
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/vertial_bar"/>
+                <include layout="@layout/band"/>
 
-                <LinearLayout
-                    android:id="@+id/ll_item"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                <com.example.viewdemo.common.view.ListViewForScrollView
+                    android:id="@+id/data_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:listSelector="@android:color/transparent"
+                    android:scrollbars="none">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/itemnew"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/item"
-                        android:textColor="@color/text_color1"
-                        android:textSize="12.0sp"
-                        android:typeface="sans"/>
-                </LinearLayout>
+                </com.example.viewdemo.common.view.ListViewForScrollView>
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/vertial_bar"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
-                android:background="@color/white"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/ll_ladder"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/laddernew"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/ladder"
-                        android:textColor="@color/text_color1"
-                        android:textSize="12.0sp"
-                        android:typeface="sans"/>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/vertial_bar"/>
-
-                <LinearLayout
-                    android:id="@+id/ll_data"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/prodatanew"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/professional_data"
-                        android:textColor="@color/text_color1"
-                        android:textSize="12.0sp"
-                        android:typeface="sans"/>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/vertial_bar"/>
-
-                <LinearLayout
-                    android:id="@+id/ll_league"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/leaguematch"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/league"
-                        android:textColor="@color/text_color1"
-                        android:textSize="12.0sp"
-                        android:typeface="sans"/>
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <include layout="@layout/band"/>
-
-            <ListView
-                android:id="@+id/data_lv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </ListView>
-
-        </LinearLayout>
-
+        </ScrollView>
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
 

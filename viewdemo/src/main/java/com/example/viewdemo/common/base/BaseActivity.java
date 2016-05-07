@@ -1,9 +1,8 @@
 package com.example.viewdemo.common.base;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.viewdemo.R;
@@ -12,7 +11,7 @@ import com.example.viewdemo.R;
  * Created by llbt on 2016/4/22.
  * Activity的基类
  */
-public class BaseActivity extends AppCompatActivity{
+public class BaseActivity extends Activity{
 
 	private TextView tv_band;
 

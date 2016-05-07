@@ -1,7 +1,9 @@
 package com.example.viewdemo.module.home.fragment;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +34,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Created by llbt on 2016/4/22.
  */
-public class DataFragment extends BaseFragment implements View.OnClickListener{
+public class DataFragment extends BaseFragment implements View.OnClickListener {
 
 	private View contentView;
 	private PtrFrameLayout mPtrFrameLayout;
@@ -54,41 +56,43 @@ public class DataFragment extends BaseFragment implements View.OnClickListener{
 		contentView = inflater.inflate(R.layout.fragment_data, null);
 		initView();
 		setListener();
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
 		return contentView;
 	}
 
-	private void initView(){
+	private void initView() {
 		tv_band.setText(getString(R.string.game_finish));
-		mPtrFrameLayout = (PtrFrameLayout)contentView.findViewById(R.id.ptrframe);
-		ll_hero = (LinearLayout)contentView.findViewById(R.id.ll_hero);
-		ll_rank = (LinearLayout)contentView.findViewById(R.id.ll_rank);
-		ll_item = (LinearLayout)contentView.findViewById(R.id.ll_item);
-		ll_ladder = (LinearLayout)contentView.findViewById(R.id.ll_ladder);
-		ll_data = (LinearLayout)contentView.findViewById(R.id.ll_data);
-		ll_league = (LinearLayout)contentView.findViewById(R.id.ll_league);
+		mPtrFrameLayout = (PtrFrameLayout) contentView.findViewById(R.id.ptrframe);
+		ll_hero = (LinearLayout) contentView.findViewById(R.id.ll_hero);
+		ll_rank = (LinearLayout) contentView.findViewById(R.id.ll_rank);
+		ll_item = (LinearLayout) contentView.findViewById(R.id.ll_item);
+		ll_ladder = (LinearLayout) contentView.findViewById(R.id.ll_ladder);
+		ll_data = (LinearLayout) contentView.findViewById(R.id.ll_data);
+		ll_league = (LinearLayout) contentView.findViewById(R.id.ll_league);
+		data_lv = (ListView) contentView.findViewById(R.id.data_lv);
 
 		mPtrFrameLayout.setResistance(1.7f);
 		// the following are default settings
 		mPtrFrameLayout.setRatioOfHeaderHeightToRefresh(1.2f);
 		mPtrFrameLayout.setDurationToClose(200);
 		mPtrFrameLayout.setDurationToCloseHeader(1000);
-        // default is false
+		// default is false
 		mPtrFrameLayout.setPullToRefresh(true);
-        // default is true
-		mPtrFrameLayout.setKeepHeaderWhenRefresh(true);
+		// default is true
+		mPtrFrameLayout.setKeepHeaderWhenRefresh(false);
 
 
 //		mPtrFrameLayout.autoRefresh();
 //		final StoreHouseHeader header = new StoreHouseHeader(getContext());
 //		header.setPadding(0, PtrLocalDisplay.designedDP2px(15), 0, 0);
 		activityList = new ArrayList<>();
+		mDataLvAdapter = new DataLvAdapter(getActivity().getApplicationContext());
 		getData();
-		mDataLvAdapter = new DataLvAdapter(getContext());
-		mDataLvAdapter.addList(activityList);
-		data_lv.setAdapter(mDataLvAdapter);
+//		data_lv.setEmptyView(R.id.tv_empty);
 	}
 
-	private void setListener(){
+	private void setListener() {
 		mPtrFrameLayout.setPtrHandler(this);
 
 		ll_hero.setOnClickListener(this);
@@ -101,13 +105,18 @@ public class DataFragment extends BaseFragment implements View.OnClickListener{
 
 	@Override
 	public void onRefreshBegin(final PtrFrameLayout frame) {
-		getData();
+//
+		if(mDataLvAdapter == null){
+			getData();
+		}else {
+			mDataLvAdapter.notifyDataSetChanged();
+		}
 		frame.refreshComplete();
 	}
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()){
+		switch (v.getId()) {
 			case R.id.ll_hero:
 				break;
 			case R.id.ll_rank:
@@ -123,31 +132,42 @@ public class DataFragment extends BaseFragment implements View.OnClickListener{
 		}
 	}
 
-	private void getData(){
+	private void getData() {
 		OkHttpClient okHttpClient = new OkHttpClient();
 		Request request = new Request.Builder().url(Constants.Data_URL).build();
 		Call call = okHttpClient.newCall(request);
 		call.enqueue(new Callback() {
 			@Override
 			public void onFailure(Request request, IOException e) {
-
+				Log.d("fail===", e.getMessage());
 			}
 
 			@Override
 			public void onResponse(Response response) throws IOException {
-				if(response.isSuccessful()){
-					try {
-						JSONArray array = new JSONObject(response.body().string()).getJSONArray("result");
-						for(int i = 0; i <= array.length(); i++){
-							JSONObject object = array.getJSONObject(i);
-							mActivityListBean = new DataListViewBean.ResultBean.ActivityListBean();
-							mActivityListBean.setContent(object.getString("content"));
-							mActivityListBean.setTitle(object.getString("title"));
-							activityList.add(mActivityListBean);
+				if (response.isSuccessful()) {
+					final String res = response.body().string();
+
+					getActivity().runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								JSONArray array = new JSONObject(res).getJSONObject("result").getJSONArray("activity_list");
+								for (int i = 0; i < array.length(); i++) {
+									JSONObject object = array.getJSONObject(i);
+									mActivityListBean = new DataListViewBean.ResultBean.ActivityListBean();
+									mActivityListBean.setContent(object.getString("content"));
+									mActivityListBean.setTitle(object.getString("title"));
+									mActivityListBean.setType(object.getInt("type"));
+									mActivityListBean.setIcon_url(object.getString("icon_url"));
+									activityList.add(mActivityListBean);
+								}
+								mDataLvAdapter.addList(activityList);
+								data_lv.setAdapter(mDataLvAdapter);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
 						}
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
+					});
 				}
 			}
 		});

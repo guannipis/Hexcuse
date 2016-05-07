@@ -59,7 +59,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 		rb_main[1].setOnClickListener(this);
 		rb_main[2].setOnClickListener(this);
 		rb_main[3].setOnClickListener(this);
-		vp_main.addOnPageChangeListener(this);
+		vp_main.setOnPageChangeListener(this);
+
 	}
 
 	@Override
