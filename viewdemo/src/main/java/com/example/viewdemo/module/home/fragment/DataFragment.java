@@ -3,7 +3,6 @@ package com.example.viewdemo.module.home.fragment;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +14,14 @@ import com.example.viewdemo.common.base.BaseFragment;
 import com.example.viewdemo.common.bean.Constants;
 import com.example.viewdemo.common.bean.DataListViewBean;
 import com.example.viewdemo.module.home.adapter.DataLvAdapter;
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,41 +129,29 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 	}
 
 	private void getData() {
-		OkHttpClient okHttpClient = new OkHttpClient();
-		Request request = new Request.Builder().url(Constants.Data_URL).build();
-		Call call = okHttpClient.newCall(request);
-		call.enqueue(new Callback() {
+		OkHttpUtils.get().url(Constants.Data_URL).build().execute(new StringCallback() {
 			@Override
-			public void onFailure(Request request, IOException e) {
-				Log.d("fail===", e.getMessage());
+			public void onError(Request request, Exception e) {
+
 			}
 
 			@Override
-			public void onResponse(Response response) throws IOException {
-				if (response.isSuccessful()) {
-					final String res = response.body().string();
-
-					getActivity().runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							try {
-								JSONArray array = new JSONObject(res).getJSONObject("result").getJSONArray("activity_list");
-								for (int i = 0; i < array.length(); i++) {
-									JSONObject object = array.getJSONObject(i);
-									mActivityListBean = new DataListViewBean.ResultBean.ActivityListBean();
-									mActivityListBean.setContent(object.getString("content"));
-									mActivityListBean.setTitle(object.getString("title"));
-									mActivityListBean.setType(object.getInt("type"));
-									mActivityListBean.setIcon_url(object.getString("icon_url"));
-									activityList.add(mActivityListBean);
-								}
-								mDataLvAdapter.addList(activityList);
-								data_lv.setAdapter(mDataLvAdapter);
-							} catch (JSONException e) {
-								e.printStackTrace();
-							}
-						}
-					});
+			public void onResponse(String response) {
+				try {
+					JSONArray array = new JSONObject(response).getJSONObject("result").getJSONArray("activity_list");
+					for (int i = 0; i < array.length(); i++) {
+						JSONObject object = array.getJSONObject(i);
+						mActivityListBean = new DataListViewBean.ResultBean.ActivityListBean();
+						mActivityListBean.setContent(object.getString("content"));
+						mActivityListBean.setTitle(object.getString("title"));
+						mActivityListBean.setType(object.getInt("type"));
+						mActivityListBean.setIcon_url(object.getString("icon_url"));
+						activityList.add(mActivityListBean);
+					}
+					mDataLvAdapter.addList(activityList);
+					data_lv.setAdapter(mDataLvAdapter);
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
 			}
 		});
