@@ -52,8 +52,6 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 		contentView = inflater.inflate(R.layout.fragment_data, null);
 		initView();
 		setListener();
-		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-		StrictMode.setThreadPolicy(policy);
 		return contentView;
 	}
 

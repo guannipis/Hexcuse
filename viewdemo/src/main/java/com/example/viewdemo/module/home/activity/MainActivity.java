@@ -60,7 +60,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 		rb_main[2].setOnClickListener(this);
 		rb_main[3].setOnClickListener(this);
 		vp_main.setOnPageChangeListener(this);
-
+		vp_main.setOffscreenPageLimit(3);
 	}
 
 	@Override

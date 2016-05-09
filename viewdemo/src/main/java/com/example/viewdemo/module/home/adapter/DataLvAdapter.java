@@ -39,7 +39,8 @@ public class DataLvAdapter extends BaseAdapter {
 	}
 
 	public void addList(List<DataListViewBean.ResultBean.ActivityListBean> data) {
-		if (data != null) {
+		this.mList.clear();
+		if (data != null && data.size() > 0) {
 			this.mList.addAll(data);
 		}
 	}
@@ -84,6 +85,7 @@ public class DataLvAdapter extends BaseAdapter {
 				view = mLayoutInflater.inflate(R.layout.listview_fullmap, null);
 				holder = new ViewHolder();
 				holder.iv_data = (ImageView) view.findViewById(R.id.iv_full);
+				holder.iv_data.setTag(mList.get(i).getIcon_url());
 				view.setTag(holder);
 			} else {
 				holder = (ViewHolder) view.getTag();
@@ -96,6 +98,7 @@ public class DataLvAdapter extends BaseAdapter {
 				holder.iv_data = (ImageView) view.findViewById(R.id.iv_data);
 				holder.tv_title = (TextView) view.findViewById(R.id.tv_title);
 				holder.tv_content = (TextView) view.findViewById(R.id.tv_content);
+				holder.iv_data.setTag(mList.get(i).getIcon_url());
 				view.setTag(holder);
 			} else {
 				holder = (ViewHolder) view.getTag();
@@ -107,7 +110,12 @@ public class DataLvAdapter extends BaseAdapter {
 		return view;
 	}
 
-	private void setBitmap(final ViewHolder holder, int i) {
+	/**
+	 * 通过URL加载网络图片资源，效率略低，可以优化
+	 * @param holder
+	 * @param i
+	 */
+	private void setBitmap(final ViewHolder holder, final int i) {
 		OkHttpUtils.get().url(mList.get(i).getIcon_url()).build().execute(new BitmapCallback() {
 			@Override
 			public void onError(Request request, Exception e) {
@@ -116,7 +124,10 @@ public class DataLvAdapter extends BaseAdapter {
 
 			@Override
 			public void onResponse(Bitmap response) {
-				holder.iv_data.setImageBitmap(response);
+				String tag = (String)holder.iv_data.getTag();
+				if (tag != null && tag.equals(mList.get(i).getIcon_url())){
+					holder.iv_data.setImageBitmap(response);
+				}
 			}
 		});
 	}
