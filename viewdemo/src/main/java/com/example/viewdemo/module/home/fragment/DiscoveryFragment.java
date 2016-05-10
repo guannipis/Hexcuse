@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +24,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.srain.cube.views.ptr.PtrFrameLayout;
+
 /**
  * Created by llbt on 2016/4/22.
  */
 public class DiscoveryFragment extends BaseFragment{
 
+	private PtrFrameLayout mPtrFrameLayout;
 	private View convertView;
 	private RecyclerView rv_discovery;
 	private DiscoveryRecyclerViewAdapter mDiscoveryRecyclerViewAdapte;
@@ -44,10 +46,34 @@ public class DiscoveryFragment extends BaseFragment{
 	}
 
 	private void initView(){
+		mPtrFrameLayout = (PtrFrameLayout)convertView.findViewById(R.id.ptrframe);
 		rv_discovery = (RecyclerView)convertView.findViewById(R.id.rv_discovery);
 		mDiscoveryRecyclerViewAdapte = new DiscoveryRecyclerViewAdapter(getActivity().getApplicationContext());
 		datas = new ArrayList<DiscoveryBean.ResultBean>();
+		mPtrFrameLayout.setPtrHandler(this);
 		getData();
+	}
+
+	@Override
+	public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+		ViewGroup viewGroup = (ViewGroup) content;
+		ViewGroup chileViewGroup = (ViewGroup) viewGroup.getChildAt(0);
+//		View chileViewGroup = (View) viewGroup.getChildAt(1);
+		View child = (View)chileViewGroup.getChildAt(1);
+		ViewGroup.LayoutParams glp = child.getLayoutParams();
+		int top = child.getTop();
+		if (glp instanceof ViewGroup.MarginLayoutParams) {
+			ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) glp;
+			return top == mlp.topMargin + chileViewGroup.getPaddingTop();
+		} else {
+			return top == chileViewGroup.getPaddingTop();
+		}
+	}
+
+	@Override
+	public void onRefreshBegin(PtrFrameLayout frame) {
+		super.onRefreshBegin(frame);
+		frame.refreshComplete();
 	}
 
 	private void getData(){
@@ -64,6 +90,7 @@ public class DiscoveryFragment extends BaseFragment{
 					for(int i = 0; i < array.length(); i++){
 						DiscoveryBean.ResultBean bean = new DiscoveryBean.ResultBean();
 						bean.setTitle(array.getJSONObject(i).getString("title"));
+						bean.setImg_type(array.getJSONObject(i).getInt("img_type"));
 						JSONArray urlArray = array.getJSONObject(i).getJSONArray("imgs");
 						List<String> stringList = new ArrayList<>();
 						for(int j = 0; j < urlArray.length(); j++){

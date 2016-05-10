@@ -25,7 +25,7 @@ import java.util.List;
  * @ClassName: ${type_name}.
  * @Description: ${todo}(用一句话描述该文件做什么).
  */
-public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<DiscoveryRecyclerViewAdapter.MyHolderView> {
+public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private Context mContext;
 	private List<DiscoveryBean.ResultBean> datas = new ArrayList<DiscoveryBean.ResultBean>();
@@ -58,10 +58,10 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<Discovery
 
 
 	@Override
-	public MyHolderView onCreateViewHolder(ViewGroup parent, int viewType) {
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		if(viewType == TYPE_MAP){
-			MyHolderView holderView = new MyHolderView(LayoutInflater.from(mContext).inflate(R.layout.listview_fullmap, parent, false));
-			return holderView;
+			FullHolderView fullHolderView = new FullHolderView(LayoutInflater.from(mContext).inflate(R.layout.listview_fullmap, parent, false));
+			return fullHolderView;
 		}else{
 			MyHolderView holderView = new MyHolderView(LayoutInflater.from(mContext).inflate(R.layout.recyclerview_discovery, parent, false));
 			return holderView;
@@ -70,12 +70,19 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<Discovery
 	}
 
 	@Override
-	public void onBindViewHolder(MyHolderView holder, int position) {
-		holder.tv_title.setText(datas.get(position).getTitle());
-		setBitmap(holder, position);
+	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+		if(holder instanceof MyHolderView){
+			((MyHolderView)holder).tv_title.setText(datas.get(position).getTitle());
+			((MyHolderView)holder).iv_discovery.setTag(datas.get(position).getImgs().get(0));
+			setBitmap(holder, position);
+		}else if(holder instanceof FullHolderView){
+			((FullHolderView)holder).iv_discovery.setTag(datas.get(position).getImgs().get(0));
+			setBitmap(holder, position);
+		}
+
 	}
 
-	private void setBitmap(final MyHolderView holder, int i) {
+	private void setBitmap(final RecyclerView.ViewHolder holder, final int i) {
 //		List<String> url = datas.get(i).getImgs();
 		OkHttpUtils.get().url(datas.get(i).getImgs().get(0)).build().execute(new BitmapCallback() {
 			@Override
@@ -85,7 +92,11 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<Discovery
 
 			@Override
 			public void onResponse(Bitmap response) {
-				holder.iv_discovery.setImageBitmap(response);
+				if(holder instanceof MyHolderView){
+					((MyHolderView)holder).iv_discovery.setImageBitmap(response);
+				}else if(holder instanceof FullHolderView){
+					((FullHolderView)holder).iv_discovery.setImageBitmap(response);
+				}
 			}
 		});
 	}
@@ -103,6 +114,16 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<Discovery
 			super(itemView);
 			iv_discovery = (ImageView)itemView.findViewById(R.id.iv_discovery);
 			tv_title = (TextView)itemView.findViewById(R.id.tv_title);
+		}
+	}
+
+	class FullHolderView extends RecyclerView.ViewHolder {
+
+		private ImageView iv_discovery;
+
+		public FullHolderView(View itemView) {
+			super(itemView);
+			iv_discovery = (ImageView)itemView.findViewById(R.id.iv_full);
 		}
 	}
 }
