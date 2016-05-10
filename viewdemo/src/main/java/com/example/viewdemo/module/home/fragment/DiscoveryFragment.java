@@ -49,6 +49,7 @@ public class DiscoveryFragment extends BaseFragment{
 		mPtrFrameLayout = (PtrFrameLayout)convertView.findViewById(R.id.ptrframe);
 		rv_discovery = (RecyclerView)convertView.findViewById(R.id.rv_discovery);
 		mDiscoveryRecyclerViewAdapte = new DiscoveryRecyclerViewAdapter(getActivity().getApplicationContext());
+		rv_discovery.setLayoutManager(new LinearLayoutManager(getActivity()));
 		datas = new ArrayList<DiscoveryBean.ResultBean>();
 		mPtrFrameLayout.setPtrHandler(this);
 		getData();
@@ -57,17 +58,25 @@ public class DiscoveryFragment extends BaseFragment{
 	@Override
 	public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
 		ViewGroup viewGroup = (ViewGroup) content;
-		ViewGroup chileViewGroup = (ViewGroup) viewGroup.getChildAt(0);
-//		View chileViewGroup = (View) viewGroup.getChildAt(1);
-		View child = (View)chileViewGroup.getChildAt(1);
-		ViewGroup.LayoutParams glp = child.getLayoutParams();
-		int top = child.getTop();
-		if (glp instanceof ViewGroup.MarginLayoutParams) {
-			ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) glp;
-			return top == mlp.topMargin + chileViewGroup.getPaddingTop();
-		} else {
-			return top == chileViewGroup.getPaddingTop();
+		RecyclerView view = (RecyclerView) viewGroup.getChildAt(1);
+		LinearLayoutManager layoutManager = (LinearLayoutManager) view.getLayoutManager();
+		if(layoutManager.findViewByPosition(layoutManager.findFirstVisibleItemPosition()).getTop() == 0
+				&& layoutManager.findFirstVisibleItemPosition() == 0){
+			return true;
+		}else{
+			return false;
 		}
+//		ViewGroup chileViewGroup = (ViewGroup) viewGroup.getChildAt(0);
+//		View chileViewGroup = (View) viewGroup.getChildAt(1);
+//		View child = (View)chileViewGroup.getChildAt(1);
+//		ViewGroup.LayoutParams glp = child.getLayoutParams();
+//		int top = child.getTop();
+//		if (glp instanceof ViewGroup.MarginLayoutParams) {
+//			ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) glp;
+//			return top == mlp.topMargin + chileViewGroup.getPaddingTop();
+//		} else {
+//			return top == chileViewGroup.getPaddingTop();
+//		}
 	}
 
 	@Override
@@ -99,7 +108,7 @@ public class DiscoveryFragment extends BaseFragment{
 						}
 						datas.add(bean);
 					}
-					rv_discovery.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 					mDiscoveryRecyclerViewAdapte.setDatas(datas);
 					rv_discovery.setAdapter(mDiscoveryRecyclerViewAdapte);
 				} catch (JSONException e) {
