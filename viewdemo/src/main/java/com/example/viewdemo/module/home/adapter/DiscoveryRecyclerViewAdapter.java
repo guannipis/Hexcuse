@@ -93,9 +93,16 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 			@Override
 			public void onResponse(Bitmap response) {
 				if(holder instanceof MyHolderView){
-					((MyHolderView)holder).iv_discovery.setImageBitmap(response);
+					String tag = (String)((MyHolderView)holder).iv_discovery.getTag();
+					if(tag != null && tag.equals(datas.get(i).getImgs().get(0))){
+						((MyHolderView)holder).iv_discovery.setImageBitmap(response);
+					}
 				}else if(holder instanceof FullHolderView){
-					((FullHolderView)holder).iv_discovery.setImageBitmap(response);
+					String tag = (String)((FullHolderView)holder).iv_discovery.getTag();
+					if(tag != null && tag.equals(datas.get(i).getImgs().get(0))){
+						((FullHolderView)holder).iv_discovery.setImageBitmap(response);
+					}
+
 				}
 			}
 		});
