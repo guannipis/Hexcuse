@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.bean.DiscoveryBean;
+import com.example.viewdemo.utils.ImageManager;
 import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -72,12 +73,14 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 		if(holder instanceof MyHolderView){
+			String url = datas.get(position).getImgs().get(0);
 			((MyHolderView)holder).tv_title.setText(datas.get(position).getTitle());
-			((MyHolderView)holder).iv_discovery.setTag(datas.get(position).getImgs().get(0));
-			setBitmap(holder, position);
+			((MyHolderView)holder).iv_discovery.setTag(url);
+			ImageManager.setBitmap(((MyHolderView) holder).iv_discovery, url);
 		}else if(holder instanceof FullHolderView){
-			((FullHolderView)holder).iv_discovery.setTag(datas.get(position).getImgs().get(0));
-			setBitmap(holder, position);
+			String url = datas.get(position).getImgs().get(0);
+			((FullHolderView)holder).iv_discovery.setTag(url);
+			ImageManager.setBitmap(((FullHolderView) holder).iv_discovery, url);
 		}
 
 	}

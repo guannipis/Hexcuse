@@ -2,6 +2,7 @@ package com.example.viewdemo.module.home.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.bean.DataListViewBean;
+import com.example.viewdemo.utils.ImageManager;
 import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -49,10 +51,8 @@ public class DataLvAdapter extends BaseAdapter {
 	public int getItemViewType(int position) {
 		if (mList.get(position).getType() == TYPE_MAP) {
 			return TYPE_MAP;
-		} else if (mList.get(position).getType() == TYPE_NORMAL) {
+		} else{
 			return TYPE_NORMAL;
-		} else {
-			return 100;
 		}
 	}
 
@@ -81,8 +81,9 @@ public class DataLvAdapter extends BaseAdapter {
 		int currentType = getItemViewType(i);
 		ViewHolder holder;
 		if (currentType == TYPE_MAP) {
+			String url = mList.get(i).getIcon_url();
 			if (view == null) {
-				view = mLayoutInflater.inflate(R.layout.listview_fullmap, null);
+				view = mLayoutInflater.inflate(R.layout.listview_fullmap, viewGroup, false);
 				holder = new ViewHolder();
 				holder.iv_data = (ImageView) view.findViewById(R.id.iv_full);
 				holder.iv_data.setTag(mList.get(i).getIcon_url());
@@ -90,10 +91,14 @@ public class DataLvAdapter extends BaseAdapter {
 			} else {
 				holder = (ViewHolder) view.getTag();
 			}
-			setBitmap(holder, i);
-		} else if (currentType == TYPE_NORMAL) {
+			String tag = (String)holder.iv_data.getTag();
+			if(tag != null && tag.equals(url)){
+				ImageManager.setBitmap(holder.iv_data, url);
+			}
+		} else{String url = mList.get(i).getIcon_url();
+
 			if (view == null) {
-				view = mLayoutInflater.inflate(R.layout.listview_data, null);
+				view = mLayoutInflater.inflate(R.layout.listview_data, viewGroup, false);
 				holder = new ViewHolder();
 				holder.iv_data = (ImageView) view.findViewById(R.id.iv_data);
 				holder.tv_title = (TextView) view.findViewById(R.id.tv_title);
@@ -105,31 +110,12 @@ public class DataLvAdapter extends BaseAdapter {
 			}
 			holder.tv_title.setText(mList.get(i).getTitle());
 			holder.tv_content.setText(mList.get(i).getContent());
-			setBitmap(holder, i);
+			String tag = (String)holder.iv_data.getTag();
+			if(tag != null && tag.equals(url)){
+				ImageManager.setBitmap(holder.iv_data, url);
+			}
 		}
 		return view;
-	}
-
-	/**
-	 * 通过URL加载网络图片资源，效率略低，可以优化
-	 * @param holder
-	 * @param i
-	 */
-	private void setBitmap(final ViewHolder holder, final int i) {
-		OkHttpUtils.get().url(mList.get(i).getIcon_url()).build().execute(new BitmapCallback() {
-			@Override
-			public void onError(Request request, Exception e) {
-
-			}
-
-			@Override
-			public void onResponse(Bitmap response) {
-				String tag = (String)holder.iv_data.getTag();
-				if (tag != null && tag.equals(mList.get(i).getIcon_url())){
-					holder.iv_data.setImageBitmap(response);
-				}
-			}
-		});
 	}
 
 	class ViewHolder {

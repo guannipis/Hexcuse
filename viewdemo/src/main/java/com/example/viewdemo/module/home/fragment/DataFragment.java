@@ -3,6 +3,7 @@ package com.example.viewdemo.module.home.fragment;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,13 +75,12 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 		// default is false
 		mPtrFrameLayout.setPullToRefresh(true);
 		// default is true
-		mPtrFrameLayout.setKeepHeaderWhenRefresh(false);
+		mPtrFrameLayout.setKeepHeaderWhenRefresh(true);
 
 
 //		mPtrFrameLayout.autoRefresh();
 //		final StoreHouseHeader header = new StoreHouseHeader(getContext());
 //		header.setPadding(0, PtrLocalDisplay.designedDP2px(15), 0, 0);
-		activityList = new ArrayList<>();
 		mDataLvAdapter = new DataLvAdapter(getActivity().getApplicationContext());
 		getData();
 //		data_lv.setEmptyView(R.id.tv_empty);
@@ -100,12 +100,15 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 	@Override
 	public void onRefreshBegin(final PtrFrameLayout frame) {
 //
+		this.mPtrFrameLayout = frame;
 		if(mDataLvAdapter == null){
 			getData();
 		}else {
+			getData();
+			mPtrFrameLayout.refreshComplete();
 			mDataLvAdapter.notifyDataSetChanged();
+
 		}
-		frame.refreshComplete();
 	}
 
 	@Override
@@ -135,7 +138,9 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 
 			@Override
 			public void onResponse(String response) {
+				Log.d("response=====", response);
 				try {
+					activityList = new ArrayList<>();
 					JSONArray array = new JSONObject(response).getJSONObject("result").getJSONArray("activity_list");
 					for (int i = 0; i < array.length(); i++) {
 						JSONObject object = array.getJSONObject(i);
