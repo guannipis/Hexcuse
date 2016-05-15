@@ -76,11 +76,11 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 			String url = datas.get(position).getImgs().get(0);
 			((MyHolderView)holder).tv_title.setText(datas.get(position).getTitle());
 			((MyHolderView)holder).iv_discovery.setTag(url);
-			ImageManager.setBitmap(((MyHolderView) holder).iv_discovery, url);
+			ImageManager.getInstance(mContext).setBitmap(((MyHolderView) holder).iv_discovery, url);
 		}else if(holder instanceof FullHolderView){
 			String url = datas.get(position).getImgs().get(0);
 			((FullHolderView)holder).iv_discovery.setTag(url);
-			ImageManager.setBitmap(((FullHolderView) holder).iv_discovery, url);
+			ImageManager.getInstance(mContext).setBitmap(((FullHolderView) holder).iv_discovery, url);
 		}
 
 	}

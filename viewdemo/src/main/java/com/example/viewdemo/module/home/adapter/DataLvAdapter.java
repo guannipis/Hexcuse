@@ -1,8 +1,6 @@
 package com.example.viewdemo.module.home.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +11,6 @@ import android.widget.TextView;
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.bean.DataListViewBean;
 import com.example.viewdemo.utils.ImageManager;
-import com.squareup.okhttp.Request;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.BitmapCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +26,15 @@ public class DataLvAdapter extends BaseAdapter {
 
 	private List<DataListViewBean.ResultBean.ActivityListBean> mList = new ArrayList<>();
 	private LayoutInflater mLayoutInflater;
+	private Context mContext;
 
 	private static final int TYPE_MAP = 0;
 	private static final int TYPE_NORMAL = 1;
 	private static final int TYPE_COUNT = 2;
 
 	public DataLvAdapter(Context context) {
-		mLayoutInflater = LayoutInflater.from(context);
+		this.mContext = context;
+		mLayoutInflater = LayoutInflater.from(mContext);
 	}
 
 	public void addList(List<DataListViewBean.ResultBean.ActivityListBean> data) {
@@ -93,7 +90,7 @@ public class DataLvAdapter extends BaseAdapter {
 			}
 			String tag = (String)holder.iv_data.getTag();
 			if(tag != null && tag.equals(url)){
-				ImageManager.setBitmap(holder.iv_data, url);
+				ImageManager.getInstance(mContext).setBitmap( holder.iv_data, url);
 			}
 		} else{String url = mList.get(i).getIcon_url();
 
@@ -112,7 +109,7 @@ public class DataLvAdapter extends BaseAdapter {
 			holder.tv_content.setText(mList.get(i).getContent());
 			String tag = (String)holder.iv_data.getTag();
 			if(tag != null && tag.equals(url)){
-				ImageManager.setBitmap(holder.iv_data, url);
+				ImageManager.getInstance(mContext).setBitmap(holder.iv_data, url);
 			}
 		}
 		return view;

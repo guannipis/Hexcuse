@@ -92,7 +92,7 @@ public class DiscoveryListViewAdapter extends BaseAdapter{
 			holder.tv_title.setText(datas.get(i).getTitle());
 			String tag = (String)holder.iv_discovery.getTag();
 			if(tag != null && tag.equals(url)){
-				ImageManager.setBitmap(holder.iv_discovery, url);
+				ImageManager.getInstance(mContext).setBitmap(holder.iv_discovery, url);
 			}
 		}else if(current == TYPE_MAP){
 			String url = datas.get(i).getImgs().get(0);
@@ -107,7 +107,7 @@ public class DiscoveryListViewAdapter extends BaseAdapter{
 			}
 			String tag = (String)holder.iv_discovery.getTag();
 			if(tag != null && tag.equals(url)){
-				ImageManager.setBitmap(holder.iv_discovery, url);
+				ImageManager.getInstance(mContext).setBitmap(holder.iv_discovery, url);
 			}
 		}
 		return view;
