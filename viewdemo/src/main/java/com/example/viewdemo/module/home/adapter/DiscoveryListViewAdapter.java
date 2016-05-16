@@ -22,7 +22,7 @@ import java.util.List;
  * @ClassName: ${type_name}.
  * @Description: ${todo}(用一句话描述该文件做什么).
  */
-public class DiscoveryListViewAdapter extends BaseAdapter{
+public class DiscoveryListViewAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private List<DiscoveryBean.ResultBean> datas = new ArrayList<DiscoveryBean.ResultBean>();
@@ -34,9 +34,9 @@ public class DiscoveryListViewAdapter extends BaseAdapter{
 		this.mContext = context;
 	}
 
-	public void setDatas(List<DiscoveryBean.ResultBean> mDatas){
+	public void setDatas(List<DiscoveryBean.ResultBean> mDatas) {
 		this.datas.clear();
-		if(mDatas != null && mDatas.size() > 0){
+		if (mDatas != null && mDatas.size() > 0) {
 			this.datas.addAll(mDatas);
 		}
 
@@ -44,11 +44,11 @@ public class DiscoveryListViewAdapter extends BaseAdapter{
 
 	@Override
 	public int getItemViewType(int position) {
-		if(datas.get(position).getImg_type() == TYPE_MAP){
+		if (datas.get(position).getImg_type() == TYPE_MAP) {
 			return TYPE_MAP;
-		}else if(datas.get(position).getImg_type() == TYPE_NORMAL){
+		} else if (datas.get(position).getImg_type() == TYPE_NORMAL) {
 			return TYPE_NORMAL;
-		}else {
+		} else {
 			return 100;
 		}
 	}
@@ -77,43 +77,42 @@ public class DiscoveryListViewAdapter extends BaseAdapter{
 	public View getView(int i, View view, ViewGroup viewGroup) {
 		int current = getItemViewType(i);
 		ViewHolder holder;
-		if(current == TYPE_NORMAL){
+		if (current == TYPE_NORMAL) {
 			String url = datas.get(i).getImgs().get(0);
-			if(view == null){
+			if (view == null) {
 				holder = new ViewHolder();
 				view = LayoutInflater.from(mContext).inflate(R.layout.recyclerview_discovery, viewGroup, false);
-				holder.tv_title = (TextView)view.findViewById(R.id.tv_title);
-				holder.iv_discovery = (ImageView)view.findViewById(R.id.iv_discovery);
-				holder.iv_discovery.setTag(datas.get(i).getImgs().get(0));
+				holder.tv_title = (TextView) view.findViewById(R.id.tv_title);
+				holder.iv_discovery = (ImageView) view.findViewById(R.id.iv_discovery);
+
 				view.setTag(holder);
-			}else{
-				holder = (ViewHolder)view.getTag();
+			} else {
+				holder = (ViewHolder) view.getTag();
 			}
+			holder.iv_discovery.setTag(datas.get(i).getImgs().get(0));
 			holder.tv_title.setText(datas.get(i).getTitle());
-			String tag = (String)holder.iv_discovery.getTag();
-			if(tag != null && tag.equals(url)){
-				ImageManager.getInstance(mContext).setBitmap(holder.iv_discovery, url);
-			}
-		}else if(current == TYPE_MAP){
+			String tag = (String) holder.iv_discovery.getTag();
+			holder.iv_discovery.setImageBitmap(null);
+			ImageManager.setBitmap(holder.iv_discovery, datas.get(i).getImgs().get(0));
+		} else if (current == TYPE_MAP) {
 			String url = datas.get(i).getImgs().get(0);
-			if(view == null){
+			if (view == null) {
 				holder = new ViewHolder();
 				view = LayoutInflater.from(mContext).inflate(R.layout.listview_fullmap, viewGroup, false);
-				holder.iv_discovery = (ImageView)view.findViewById(R.id.iv_full);
-				holder.iv_discovery.setTag(datas.get(i).getImgs().get(0));
+				holder.iv_discovery = (ImageView) view.findViewById(R.id.iv_full);
 				view.setTag(holder);
-			}else{
-				holder = (ViewHolder)view.getTag();
+			} else {
+				holder = (ViewHolder) view.getTag();
 			}
-			String tag = (String)holder.iv_discovery.getTag();
-			if(tag != null && tag.equals(url)){
-				ImageManager.getInstance(mContext).setBitmap(holder.iv_discovery, url);
-			}
+			holder.iv_discovery.setTag(datas.get(i).getImgs().get(0));
+			String tag = (String) holder.iv_discovery.getTag();
+			holder.iv_discovery.setImageBitmap(null);
+			ImageManager.setBitmap(holder.iv_discovery, datas.get(i).getImgs().get(0));
 		}
 		return view;
 	}
 
-	class ViewHolder{
+	class ViewHolder {
 		private ImageView iv_discovery;
 		private TextView tv_title;
 	}

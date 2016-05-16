@@ -1,10 +1,11 @@
 package com.example.viewdemo.utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.example.viewdemo.R;
+import com.example.viewdemo.module.home.activity.MainActivity;
 import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -18,49 +19,79 @@ import com.zhy.http.okhttp.callback.BitmapCallback;
  */
 public class ImageManager {
 
-	private static ImageMemoryCache memoryCache = null;
+	private static Bitmap bitmap;
 
-	private ImageManager(){}
+	/**
+	 * 通过URL加载图片，首先从内存缓存中加载，则请求网络获取
+	 * 获取得到图片后，储存在内存中
+	 *
+	 * @param imageView
+	 * @param url
+	 */
+	public static void setBitmapCache(final ImageView imageView, final String url) {
+		String tag = (String) imageView.getTag();
+		if (tag != null && tag.equals(url)) {
+			bitmap = ImageMemoryCache.getInstance().getBitmapFromCache(url);
+			if (bitmap != null) {
+				imageView.setImageBitmap(bitmap);
+				Log.d("cache====", url);
+			} else {
+				OkHttpUtils.get().url(url).build().execute(new BitmapCallback() {
+					@Override
+					public void onError(Request request, Exception e) {
 
-	private static class Instance{
-		private static ImageManager instance = new ImageManager();
-	}
+					}
 
-	public static ImageManager getInstance(Context context){
-		if(memoryCache == null){
-			memoryCache = new ImageMemoryCache(context.getApplicationContext());
+					@Override
+					public void onResponse(final Bitmap response) {
+						ImageMemoryCache.getInstance().addBitmapToCache(url, response);         //储存图片到缓存中
+						imageView.setImageBitmap(response);
+
+						Log.d("response====", url);
+					}
+				});
+			}
 		}
-		return Instance.instance;
 	}
-
 
 
 	/**
-	 * 通过URL加载网络图片资源，效率略低，可以优化
+	 * 通过URL加载图片，首先从内存缓存中加载，如果找不到，则从文件中加载，如果找不到，则请求网络获取
+	 * 获取得到图片后，储存在内存中，并下载储存在sd卡里
+	 *
 	 * @param imageView
 	 * @param url
-	*/
-	public void setBitmap(final ImageView imageView, final String url) {
-		Bitmap bitmap = memoryCache.getBitmapFromCache(url);
-		if(bitmap != null){
-			imageView.setImageBitmap(bitmap);
-			Log.d("cache====", url);
-		}else{
-			OkHttpUtils.get().url(url).build().execute(new BitmapCallback() {
-				@Override
-				public void onError(Request request, Exception e) {
+	 */
+	public static void setBitmap(final ImageView imageView, final String url) {
+		String tag = (String) imageView.getTag();
+		if (tag != null && tag.equals(url)) {
+			bitmap = ImageMemoryCache.getInstance().getBitmapFromCache(url);
+			if (bitmap != null) {
+				imageView.setImageBitmap(bitmap);
+				Log.d("cache====", url);
+			} else {
+				bitmap = ImageFileCache.getInstance().getBitmap(url);
+				if (bitmap != null) {
+					imageView.setImageBitmap(bitmap);
+					Log.d("file====", url);
+				} else {
+					OkHttpUtils.get().url(url).build().execute(new BitmapCallback() {
+						@Override
+						public void onError(Request request, Exception e) {
 
+						}
+
+						@Override
+						public void onResponse(final Bitmap response) {
+							ImageMemoryCache.getInstance().addBitmapToCache(url, response);
+							ImageFileCache.getInstance().saveBitmap(url, response);             //储存图片到SD卡中
+							imageView.setImageBitmap(response);
+
+							Log.d("response====", url);
+						}
+					});
 				}
-
-				@Override
-				public void onResponse(final Bitmap response) {
-					memoryCache.addBitmapToCache(url, response);
-					imageView.setImageBitmap(response);
-
-					Log.d("response====", url);
-				}
-			});
+			}
 		}
-
 	}
 }

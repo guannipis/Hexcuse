@@ -15,12 +15,26 @@ import java.util.LinkedHashMap;
  */
 public class ImageMemoryCache {
 
-
+	private static ImageMemoryCache mInstance;
 	private static final int SOFT_CACHE_SIZE = 15;  //软引用缓存容量
 	private static LruCache<String, Bitmap> sLruCache;   //硬引用缓存
 	private static LinkedHashMap<String, SoftReference<Bitmap>> sSoftReference;     //软引用缓存
 
-	public ImageMemoryCache(Context context) {
+	/**
+	 * 单例模式
+	 */
+	public static ImageMemoryCache getInstance(){
+		if(mInstance == null){
+			synchronized (ImageMemoryCache.class){
+				if(mInstance == null){
+					mInstance = new ImageMemoryCache();
+				}
+			}
+		}
+		return mInstance;
+	}
+
+	public ImageMemoryCache() {
 		int messMemory = (int) Runtime.getRuntime().maxMemory();   //获取手机内存
 		int cacheSize = messMemory / 8;         //最大缓存为内存的四分之一
 		// 0.75是加载因子为经验值，true则表示按照最近访问量的高低排序，false则表示按照插入顺序排序
@@ -57,7 +71,7 @@ public class ImageMemoryCache {
 	/**
 	 * 从缓存中获取图片
 	 */
-	public static Bitmap getBitmapFromCache(String url){
+	public Bitmap getBitmapFromCache(String url){
 		Bitmap bitmap;
 		//先从硬引用缓存中获取
 		synchronized (sLruCache){
@@ -100,7 +114,7 @@ public class ImageMemoryCache {
 	/**
 	 * 清除所有缓存
 	 */
-	public static void clearCache(){
+	public void clearCache(){
 		sSoftReference.clear();
 	}
 }

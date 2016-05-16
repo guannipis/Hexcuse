@@ -1,6 +1,7 @@
 package com.example.viewdemo.module.home.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class DataLvAdapter extends BaseAdapter {
 	public int getItemViewType(int position) {
 		if (mList.get(position).getType() == TYPE_MAP) {
 			return TYPE_MAP;
-		} else{
+		} else {
 			return TYPE_NORMAL;
 		}
 	}
@@ -75,6 +76,7 @@ public class DataLvAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int i, View view, ViewGroup viewGroup) {
+		Log.d("view===", i + "");
 		int currentType = getItemViewType(i);
 		ViewHolder holder;
 		if (currentType == TYPE_MAP) {
@@ -88,12 +90,10 @@ public class DataLvAdapter extends BaseAdapter {
 			} else {
 				holder = (ViewHolder) view.getTag();
 			}
-			String tag = (String)holder.iv_data.getTag();
-			if(tag != null && tag.equals(url)){
-				ImageManager.getInstance(mContext).setBitmap( holder.iv_data, url);
-			}
-		} else{String url = mList.get(i).getIcon_url();
-
+			String tag = (String) holder.iv_data.getTag();
+			ImageManager.setBitmapCache(holder.iv_data, url);
+		} else {
+			String url = mList.get(i).getIcon_url();
 			if (view == null) {
 				view = mLayoutInflater.inflate(R.layout.listview_data, viewGroup, false);
 				holder = new ViewHolder();
@@ -107,10 +107,8 @@ public class DataLvAdapter extends BaseAdapter {
 			}
 			holder.tv_title.setText(mList.get(i).getTitle());
 			holder.tv_content.setText(mList.get(i).getContent());
-			String tag = (String)holder.iv_data.getTag();
-			if(tag != null && tag.equals(url)){
-				ImageManager.getInstance(mContext).setBitmap(holder.iv_data, url);
-			}
+			String tag = (String) holder.iv_data.getTag();
+			ImageManager.setBitmapCache(holder.iv_data, url);
 		}
 		return view;
 	}

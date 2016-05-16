@@ -29,7 +29,7 @@ import java.util.List;
 public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private Context mContext;
-	private List<DiscoveryBean.ResultBean> datas = new ArrayList<DiscoveryBean.ResultBean>();
+	private List<DiscoveryBean.ResultBean> datas = new ArrayList<>();
 
 	private static final int TYPE_NORMAL = 0;
 	private static final int TYPE_MAP = 2;
@@ -76,40 +76,17 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 			String url = datas.get(position).getImgs().get(0);
 			((MyHolderView)holder).tv_title.setText(datas.get(position).getTitle());
 			((MyHolderView)holder).iv_discovery.setTag(url);
-			ImageManager.getInstance(mContext).setBitmap(((MyHolderView) holder).iv_discovery, url);
+			((MyHolderView) holder).iv_discovery.setImageBitmap(null);
+			ImageManager.setBitmap(((MyHolderView) holder).iv_discovery, url);
 		}else if(holder instanceof FullHolderView){
 			String url = datas.get(position).getImgs().get(0);
 			((FullHolderView)holder).iv_discovery.setTag(url);
-			ImageManager.getInstance(mContext).setBitmap(((FullHolderView) holder).iv_discovery, url);
+			((FullHolderView) holder).iv_discovery.setImageBitmap(null);
+			ImageManager.setBitmap(((FullHolderView) holder).iv_discovery, url);
 		}
 
 	}
 
-	private void setBitmap(final RecyclerView.ViewHolder holder, final int i) {
-//		List<String> url = datas.get(i).getImgs();
-		OkHttpUtils.get().url(datas.get(i).getImgs().get(0)).build().execute(new BitmapCallback() {
-			@Override
-			public void onError(Request request, Exception e) {
-
-			}
-
-			@Override
-			public void onResponse(Bitmap response) {
-				if(holder instanceof MyHolderView){
-					String tag = (String)((MyHolderView)holder).iv_discovery.getTag();
-					if(tag != null && tag.equals(datas.get(i).getImgs().get(0))){
-						((MyHolderView)holder).iv_discovery.setImageBitmap(response);
-					}
-				}else if(holder instanceof FullHolderView){
-					String tag = (String)((FullHolderView)holder).iv_discovery.getTag();
-					if(tag != null && tag.equals(datas.get(i).getImgs().get(0))){
-						((FullHolderView)holder).iv_discovery.setImageBitmap(response);
-					}
-
-				}
-			}
-		});
-	}
 	@Override
 	public int getItemCount() {
 		return datas.size();
