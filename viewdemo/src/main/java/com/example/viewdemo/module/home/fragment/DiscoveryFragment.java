@@ -7,7 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.base.BaseFragment;
@@ -129,6 +131,17 @@ public class DiscoveryFragment extends BaseFragment {
 //					lv_discovery.setAdapter(mDiscoveryListViewAdapter);
 					mDiscoveryRecyclerViewAdapte.setDatas(datas);
 					rv_discovery.setAdapter(mDiscoveryRecyclerViewAdapte);
+					mDiscoveryRecyclerViewAdapte.setOnItemClickLitener(new DiscoveryRecyclerViewAdapter.onItemClickListener() {
+						@Override
+						public void onItemClick(View view, int position) {
+							Toast.makeText(getActivity().getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
+						}
+
+						@Override
+						public void onItemLongClick(View view, int position) {
+
+						}
+					});
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

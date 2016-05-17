@@ -28,6 +28,19 @@ import java.util.List;
  */
 public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+
+	public interface onItemClickListener{
+		void onItemClick(View view, int position);
+		void onItemLongClick(View view, int position);
+	}
+
+	private onItemClickListener mOnItemClickListener;
+
+	public void setOnItemClickLitener(onItemClickListener mOnItemClickListener){
+		this.mOnItemClickListener = mOnItemClickListener;
+	}
+
+
 	private Context mContext;
 	private List<DiscoveryBean.ResultBean> datas = new ArrayList<>();
 
@@ -71,7 +84,7 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 	}
 
 	@Override
-	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+	public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 		if(holder instanceof MyHolderView){
 			String url = datas.get(position).getImgs().get(0);
 			((MyHolderView)holder).tv_title.setText(datas.get(position).getTitle());
@@ -84,8 +97,15 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 			((FullHolderView) holder).iv_discovery.setImageBitmap(null);
 			ImageManager.setBitmap(((FullHolderView) holder).iv_discovery, url);
 		}
+		holder.itemView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mOnItemClickListener.onItemClick(holder.itemView, holder.getLayoutPosition());
+			}
+		});
 
 	}
+
 
 	@Override
 	public int getItemCount() {
