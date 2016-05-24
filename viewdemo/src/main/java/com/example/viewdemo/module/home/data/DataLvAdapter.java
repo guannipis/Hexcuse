@@ -1,4 +1,4 @@
-package com.example.viewdemo.module.home.adapter;
+package com.example.viewdemo.module.home.data;
 
 import android.content.Context;
 import android.util.Log;
@@ -42,6 +42,7 @@ public class DataLvAdapter extends BaseAdapter {
 		this.mList.clear();
 		if (data != null && data.size() > 0) {
 			this.mList.addAll(data);
+			this.notifyDataSetChanged();
 		}
 	}
 
@@ -90,7 +91,6 @@ public class DataLvAdapter extends BaseAdapter {
 			} else {
 				holder = (ViewHolder) view.getTag();
 			}
-			String tag = (String) holder.iv_data.getTag();
 			ImageManager.setBitmapCache(holder.iv_data, url);
 		} else {
 			String url = mList.get(i).getIcon_url();
@@ -107,7 +107,6 @@ public class DataLvAdapter extends BaseAdapter {
 			}
 			holder.tv_title.setText(mList.get(i).getTitle());
 			holder.tv_content.setText(mList.get(i).getContent());
-			String tag = (String) holder.iv_data.getTag();
 			ImageManager.setBitmapCache(holder.iv_data, url);
 		}
 		return view;

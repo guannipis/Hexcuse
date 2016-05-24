@@ -1,7 +1,6 @@
-package com.example.viewdemo.module.home.adapter;
+package com.example.viewdemo.module.home.discovery;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +11,6 @@ import android.widget.TextView;
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.bean.DiscoveryBean;
 import com.example.viewdemo.utils.ImageManager;
-import com.squareup.okhttp.Request;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.BitmapCallback;
 
 import java.util.ArrayList;
 import java.util.List;

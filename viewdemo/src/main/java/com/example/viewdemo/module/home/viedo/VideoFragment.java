@@ -1,4 +1,4 @@
-package com.example.viewdemo.module.home.fragment;
+package com.example.viewdemo.module.home.viedo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

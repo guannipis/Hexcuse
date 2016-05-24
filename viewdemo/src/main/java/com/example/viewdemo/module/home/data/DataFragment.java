@@ -1,9 +1,7 @@
-package com.example.viewdemo.module.home.fragment;
+package com.example.viewdemo.module.home.data;
 
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +10,8 @@ import android.widget.ListView;
 
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.base.BaseFragment;
-import com.example.viewdemo.common.bean.Constants;
 import com.example.viewdemo.common.bean.DataListViewBean;
-import com.example.viewdemo.module.home.adapter.DataLvAdapter;
-import com.squareup.okhttp.Request;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -31,7 +19,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Created by llbt on 2016/4/22.
  */
-public class DataFragment extends BaseFragment implements View.OnClickListener {
+public class DataFragment extends BaseFragment implements View.OnClickListener, DataContract.View {
 
 	private View contentView;
 	private PtrFrameLayout mPtrFrameLayout;
@@ -43,8 +31,8 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 	private LinearLayout ll_league;
 	private ListView data_lv;
 	private DataLvAdapter mDataLvAdapter;
-	private List<DataListViewBean.ResultBean.ActivityListBean> activityList;
-	private DataListViewBean.ResultBean.ActivityListBean mActivityListBean;
+
+	private DataContract.Presenter mPresenter;
 
 	@Nullable
 	@Override
@@ -56,8 +44,13 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 		return contentView;
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		mPresenter.start();
+	}
+
 	private void initView() {
-		tv_band.setText(getString(R.string.game_finish));
 		mPtrFrameLayout = (PtrFrameLayout) contentView.findViewById(R.id.ptrframe);
 		ll_hero = (LinearLayout) contentView.findViewById(R.id.ll_hero);
 		ll_rank = (LinearLayout) contentView.findViewById(R.id.ll_rank);
@@ -81,8 +74,8 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 //		mPtrFrameLayout.autoRefresh();
 //		final StoreHouseHeader header = new StoreHouseHeader(getContext());
 //		header.setPadding(0, PtrLocalDisplay.designedDP2px(15), 0, 0);
-		mDataLvAdapter = new DataLvAdapter(getActivity().getApplicationContext());
-		getData();
+
+//		getData();
 //		data_lv.setEmptyView(R.id.tv_empty);
 	}
 
@@ -102,9 +95,9 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 //
 		this.mPtrFrameLayout = frame;
 		if(mDataLvAdapter == null){
-			getData();
+			mPresenter.start();
 		}else {
-			getData();
+			mPresenter.start();
 			mPtrFrameLayout.refreshComplete();
 			mDataLvAdapter.notifyDataSetChanged();
 
@@ -129,34 +122,15 @@ public class DataFragment extends BaseFragment implements View.OnClickListener {
 		}
 	}
 
-	private void getData() {
-		OkHttpUtils.get().url(Constants.Data_URL).build().execute(new StringCallback() {
-			@Override
-			public void onError(Request request, Exception e) {
+	@Override
+	public void setPresenter(DataContract.Presenter presenter) {
+		this.mPresenter = presenter;
+	}
 
-			}
-
-			@Override
-			public void onResponse(String response) {
-				Log.d("response=====", response);
-				try {
-					activityList = new ArrayList<>();
-					JSONArray array = new JSONObject(response).getJSONObject("result").getJSONArray("activity_list");
-					for (int i = 0; i < array.length(); i++) {
-						JSONObject object = array.getJSONObject(i);
-						mActivityListBean = new DataListViewBean.ResultBean.ActivityListBean();
-						mActivityListBean.setContent(object.getString("content"));
-						mActivityListBean.setTitle(object.getString("title"));
-						mActivityListBean.setType(object.getInt("type"));
-						mActivityListBean.setIcon_url(object.getString("icon_url"));
-						activityList.add(mActivityListBean);
-					}
-					mDataLvAdapter.addList(activityList);
-					data_lv.setAdapter(mDataLvAdapter);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	@Override
+	public void showListView(List<DataListViewBean.ResultBean.ActivityListBean> activityList) {
+		mDataLvAdapter = new DataLvAdapter(getActivity().getApplicationContext());
+		mDataLvAdapter.addList(activityList);
+		data_lv.setAdapter(mDataLvAdapter);
 	}
 }

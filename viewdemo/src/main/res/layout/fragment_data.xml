@@ -4,8 +4,6 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <include layout="@layout/activity_toolbar"/>
-
     <in.srain.cube.views.ptr.PtrClassicFrameLayout
         android:id="@+id/ptrframe"
         android:layout_width="match_parent"

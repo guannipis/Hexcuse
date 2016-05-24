@@ -1,4 +1,4 @@
-package com.example.viewdemo.module.home.fragment;
+package com.example.viewdemo.module.home.discovery;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,16 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityManager;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.base.BaseFragment;
 import com.example.viewdemo.common.bean.Constants;
 import com.example.viewdemo.common.bean.DiscoveryBean;
-import com.example.viewdemo.module.home.adapter.DiscoveryListViewAdapter;
-import com.example.viewdemo.module.home.adapter.DiscoveryRecyclerViewAdapter;
+import com.example.viewdemo.module.home.discovery.DiscoveryRecyclerViewAdapter;
 import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;

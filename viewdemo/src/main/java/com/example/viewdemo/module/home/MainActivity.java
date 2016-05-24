@@ -1,18 +1,20 @@
-package com.example.viewdemo.module.home.activity;
+package com.example.viewdemo.module.home;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.base.BaseFragmentActivity;
-import com.example.viewdemo.module.home.adapter.ViewPagerAdapter;
-import com.example.viewdemo.module.home.fragment.DataFragment;
-import com.example.viewdemo.module.home.fragment.DiscoveryFragment;
-import com.example.viewdemo.module.home.fragment.MeFragment;
-import com.example.viewdemo.module.home.fragment.VideoFragment;
+import com.example.viewdemo.module.home.data.DataFragment;
+import com.example.viewdemo.module.home.data.DataPresenter;
+import com.example.viewdemo.module.home.discovery.DiscoveryFragment;
+import com.example.viewdemo.module.home.me.MeFragment;
+import com.example.viewdemo.module.home.viedo.VideoFragment;
 
 /**
  * 主页面，采用Fragment＋viewpager＋RadioButton
@@ -27,9 +29,15 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 	private RadioButton rb_video;
 
 	private int currentPosition;
+	private Toolbar mToolbar;
+	private TextView tv_toolbar;
 
 	private ViewPager vp_main;
 	private Fragment[] mFragments;
+	private MeFragment meFragment;
+	private DataFragment dataFragment;
+	private DiscoveryFragment discoveryFragment;
+	private VideoFragment videoFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +55,11 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 		rb_main[1] = (RadioButton)findViewById(R.id.rb_home);
 		rb_main[2] = (RadioButton)findViewById(R.id.rb_discovery);
 		rb_main[3] = (RadioButton)findViewById(R.id.rb_video);
-		mFragments = new Fragment[]{new MeFragment(), new DataFragment(), new DiscoveryFragment(), new VideoFragment()};
+		mToolbar = (Toolbar) findViewById(R.id.common_toolbar);
+		tv_toolbar = (TextView)findViewById(R.id.tv_toolbar);
+		meFragment = new MeFragment();
+		dataFragment = new DataFragment();
+		mFragments = new Fragment[]{meFragment, dataFragment, new DiscoveryFragment(), new VideoFragment()};
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), mFragments);
 		vp_main.setAdapter(adapter);
 		vp_main.setCurrentItem(0);
@@ -59,7 +71,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 		rb_main[1].setOnClickListener(this);
 		rb_main[2].setOnClickListener(this);
 		rb_main[3].setOnClickListener(this);
-		vp_main.setOnPageChangeListener(this);
+		vp_main.addOnPageChangeListener(this);
 		vp_main.setOffscreenPageLimit(3);
 	}
 
@@ -68,15 +80,20 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 		switch (view.getId()){
 			case R.id.rb_me:
 				vp_main.setCurrentItem(0);
+				tv_toolbar.setText("MAX+");
 			    break;
 			case R.id.rb_home:
 				vp_main.setCurrentItem(1);
+				tv_toolbar.setText(getResources().getString(R.string.data));
+				new DataPresenter(dataFragment);
 				break;
 			case R.id.rb_discovery:
 				vp_main.setCurrentItem(2);
+				tv_toolbar.setText(getResources().getString(R.string.discovery));
 				break;
 			case R.id.rb_video:
 				vp_main.setCurrentItem(3);
+				tv_toolbar.setText(getResources().getString(R.string.video));
 				break;
 		}
 	}
@@ -88,9 +105,10 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
 	@Override
 	public void onPageSelected(int position) {
-		for(int i = 0; i <= position; i++){
-			rb_main[i].setChecked(true);
-		}
+//		for(int i = 0; i <= position; i++){
+//
+//		}
+		rb_main[position].setChecked(true);
 	}
 
 	@Override

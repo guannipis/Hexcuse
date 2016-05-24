@@ -1,4 +1,4 @@
-package com.example.viewdemo.module.home.adapter;
+package com.example.viewdemo.module.home;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

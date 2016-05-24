@@ -1,4 +1,4 @@
-package com.example.viewdemo.module.home.adapter;
+package com.example.viewdemo.module.home.discovery;
 
 import android.content.Context;
 import android.view.LayoutInflater;

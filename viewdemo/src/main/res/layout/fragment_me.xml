@@ -3,12 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/fl_toolbar"
-        layout="@layout/activity_toolbar"/>
-
     <TextView
-        android:layout_below="@+id/fl_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="this is me"
