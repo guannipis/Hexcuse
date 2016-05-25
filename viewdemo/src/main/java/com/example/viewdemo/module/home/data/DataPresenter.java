@@ -28,23 +28,30 @@ public class DataPresenter implements DataContract.Presenter {
 	private DataListViewBean.ResultBean.ActivityListBean mActivityListBean;
 	private List<DataListViewBean.ResultBean.ActivityListBean> activityList;
 
-	public DataPresenter(DataContract.View mDataView) {
-		this.mDataView = mDataView;
+	public DataPresenter(DataContract.View DataView) {
+		this.mDataView = DataView;
 		mDataView.setPresenter(this);
 	}
 
 	@Override
-	public void getListViewData(final List<DataListViewBean.ResultBean.ActivityListBean> activityList) {
+	public void start() {
+		getListViewData();
+	}
+
+	@Override
+	public void getListViewData() {
 		OkHttpUtils.get().url(Constants.Data_URL).build().execute(new StringCallback() {
 			@Override
 			public void onError(Request request, Exception e) {
-
+//				mDataView.showError(request.body().toString());
+				mDataView.showError(e.getMessage());
 			}
 
 			@Override
 			public void onResponse(String response) {
 				Log.d("response=====", response);
 				try {
+					activityList = new ArrayList<>();
 					JSONArray array = new JSONObject(response).getJSONObject("result").getJSONArray("activity_list");
 					for (int i = 0; i < array.length(); i++) {
 						JSONObject object = array.getJSONObject(i);
@@ -65,9 +72,16 @@ public class DataPresenter implements DataContract.Presenter {
 	}
 
 	@Override
-	public void start() {
-		activityList = new ArrayList<>();
-		getListViewData(activityList);
+	public void refreshListView() {
+		getListViewData();
+		mDataView.refreshComplete();
 	}
+
+	@Override
+	public void onItemClick(int position) {
+//		mDataView.toActivity();
+	}
+
+
 
 }

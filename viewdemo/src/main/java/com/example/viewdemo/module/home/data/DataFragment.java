@@ -1,10 +1,13 @@
 package com.example.viewdemo.module.home.data;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -19,7 +22,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Created by llbt on 2016/4/22.
  */
-public class DataFragment extends BaseFragment implements View.OnClickListener, DataContract.View {
+public class DataFragment extends BaseFragment implements View.OnClickListener, DataContract.View, AdapterView.OnItemClickListener {
 
 	private View contentView;
 	private PtrFrameLayout mPtrFrameLayout;
@@ -33,6 +36,14 @@ public class DataFragment extends BaseFragment implements View.OnClickListener, 
 	private DataLvAdapter mDataLvAdapter;
 
 	private DataContract.Presenter mPresenter;
+
+	public static DataFragment newInstance(){
+		return new DataFragment();
+	}
+
+	public DataFragment(){
+
+	}
 
 	@Nullable
 	@Override
@@ -50,6 +61,11 @@ public class DataFragment extends BaseFragment implements View.OnClickListener, 
 		mPresenter.start();
 	}
 
+	@Override
+	public void setPresenter(DataContract.Presenter presenter) {
+		this.mPresenter = presenter;
+	}
+
 	private void initView() {
 		mPtrFrameLayout = (PtrFrameLayout) contentView.findViewById(R.id.ptrframe);
 		ll_hero = (LinearLayout) contentView.findViewById(R.id.ll_hero);
@@ -59,7 +75,10 @@ public class DataFragment extends BaseFragment implements View.OnClickListener, 
 		ll_data = (LinearLayout) contentView.findViewById(R.id.ll_data);
 		ll_league = (LinearLayout) contentView.findViewById(R.id.ll_league);
 		data_lv = (ListView) contentView.findViewById(R.id.data_lv);
+		initPtr();
+	}
 
+	private void initPtr(){
 		mPtrFrameLayout.setResistance(1.7f);
 		// the following are default settings
 		mPtrFrameLayout.setRatioOfHeaderHeightToRefresh(1.2f);
@@ -69,7 +88,6 @@ public class DataFragment extends BaseFragment implements View.OnClickListener, 
 		mPtrFrameLayout.setPullToRefresh(true);
 		// default is true
 		mPtrFrameLayout.setKeepHeaderWhenRefresh(true);
-
 
 //		mPtrFrameLayout.autoRefresh();
 //		final StoreHouseHeader header = new StoreHouseHeader(getContext());
@@ -88,6 +106,8 @@ public class DataFragment extends BaseFragment implements View.OnClickListener, 
 		ll_ladder.setOnClickListener(this);
 		ll_rank.setOnClickListener(this);
 		ll_item.setOnClickListener(this);
+
+		data_lv.setOnItemClickListener(this);
 	}
 
 	@Override
@@ -95,12 +115,9 @@ public class DataFragment extends BaseFragment implements View.OnClickListener, 
 //
 		this.mPtrFrameLayout = frame;
 		if(mDataLvAdapter == null){
-			mPresenter.start();
+			mPresenter.refreshListView();
 		}else {
-			mPresenter.start();
-			mPtrFrameLayout.refreshComplete();
-			mDataLvAdapter.notifyDataSetChanged();
-
+			mPresenter.refreshListView();
 		}
 	}
 
@@ -108,6 +125,7 @@ public class DataFragment extends BaseFragment implements View.OnClickListener, 
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.ll_hero:
+				toActivity(new HeroActivity());
 				break;
 			case R.id.ll_rank:
 				break;
@@ -122,15 +140,32 @@ public class DataFragment extends BaseFragment implements View.OnClickListener, 
 		}
 	}
 
-	@Override
-	public void setPresenter(DataContract.Presenter presenter) {
-		this.mPresenter = presenter;
-	}
 
 	@Override
 	public void showListView(List<DataListViewBean.ResultBean.ActivityListBean> activityList) {
 		mDataLvAdapter = new DataLvAdapter(getActivity().getApplicationContext());
 		mDataLvAdapter.addList(activityList);
 		data_lv.setAdapter(mDataLvAdapter);
+	}
+
+	@Override
+	public void showError(String error) {
+
+	}
+
+	@Override
+	public void refreshComplete() {
+		mPtrFrameLayout.refreshComplete();
+	}
+
+	@Override
+	public void toActivity(Activity activity) {
+		startActivity(new Intent(getActivity(), activity.getClass()));
+	}
+
+
+	@Override
+	public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+		mPresenter.onItemClick(i);
 	}
 }

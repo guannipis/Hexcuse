@@ -1,5 +1,7 @@
 package com.example.viewdemo.module.home.data;
 
+import android.app.Activity;
+
 import com.example.viewdemo.common.base.BasePresenter;
 import com.example.viewdemo.common.base.BaseView;
 import com.example.viewdemo.common.bean.DataListViewBean;
@@ -19,11 +21,21 @@ public interface DataContract {
 
 		void showListView(List<DataListViewBean.ResultBean.ActivityListBean> activityList);
 
+		void showError(String error);
+
+		void refreshComplete();
+
+		void toActivity(Activity activity);
+
 	}
 
 	interface Presenter extends BasePresenter {
 
-		void getListViewData(List<DataListViewBean.ResultBean.ActivityListBean> activityList);
+		void getListViewData();
+
+		void refreshListView();
+
+		void onItemClick(int position);
 
 	}
 }

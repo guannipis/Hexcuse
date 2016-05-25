@@ -17,10 +17,23 @@ public class MeFragment extends BaseFragment{
 
 	private Toolbar mToolbar;
 
+	public static MeFragment newInstance(){
+		return new MeFragment();
+	}
+
+	public MeFragment(){
+
+	}
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View view  = inflater.inflate(R.layout.fragment_me, null);
 		return view;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 	}
 }

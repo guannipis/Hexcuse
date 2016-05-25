@@ -1,7 +1,6 @@
 package com.example.viewdemo.common.base;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 
 import java.util.Stack;
 
@@ -10,31 +9,46 @@ import java.util.Stack;
  */
 public class ActivityCollector {
 
-	private static Stack<Object> pageStack;
+	private static Stack<Activity> pageStack;
+	private static ActivityCollector instance;
 
 	public ActivityCollector(){
 		pageStack = new Stack<>();
 	}
 
-	public static void addActivity(Object object) {
-		if(!pageStack.contains(object)){
-			pageStack.add(object);
+	public static ActivityCollector getInstance(){
+		if(instance == null){
+			synchronized (ActivityCollector.class){
+				if(instance == null){
+					instance = new ActivityCollector();
+				}
+			}
+		}
+		return instance;
+	}
+
+	public void addActivity(Activity activity) {
+		if(activity != null){
+			pageStack.add(activity);
 		}
 	}
 
-	public static void removeActivity(Object object) {
-		if(object instanceof Activity){
-			((Activity)object).finish();
-		}else if(object instanceof Fragment){
-			((Fragment)object).getActivity().finish();
+	public void removeActivity(Activity activity) {
+		if(pageStack != null && activity != null){
+			pageStack.remove(activity);
+			activity.finish();
 		}
-		pageStack.remove(object);
+
 	}
 
-	public static void finishAll(){
+	public Activity getLastActivity(){
+		return pageStack.lastElement();
+	}
+
+	public void finishAll(){
 		int size = pageStack.size();
 		for(int i =0; i < size; i++){
-			removeActivity(pageStack.get(i));
+			removeActivity(getLastActivity());
 		}
 		pageStack.clear();
 	}

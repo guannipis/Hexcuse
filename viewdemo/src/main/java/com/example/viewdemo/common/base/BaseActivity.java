@@ -2,7 +2,6 @@ package com.example.viewdemo.common.base;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.widget.TextView;
 
 import com.example.viewdemo.R;
@@ -16,9 +15,9 @@ public class BaseActivity extends Activity{
 	private TextView tv_band;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-		super.onCreate(savedInstanceState, persistentState);
-		ActivityCollector.addActivity(this);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		ActivityCollector.getInstance().addActivity(this);
 	}
 
 	protected void setBandTitle(int id){
@@ -30,7 +29,7 @@ public class BaseActivity extends Activity{
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		ActivityCollector.removeActivity(this);
+		ActivityCollector.getInstance().removeActivity(this);
 	}
 
 }

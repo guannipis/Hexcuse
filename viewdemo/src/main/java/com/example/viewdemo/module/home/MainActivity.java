@@ -57,13 +57,19 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 		rb_main[3] = (RadioButton)findViewById(R.id.rb_video);
 		mToolbar = (Toolbar) findViewById(R.id.common_toolbar);
 		tv_toolbar = (TextView)findViewById(R.id.tv_toolbar);
-		meFragment = new MeFragment();
-		dataFragment = new DataFragment();
+		initViewPager();
+	}
+
+	private void initViewPager(){
+		meFragment = MeFragment.newInstance();
+		dataFragment = DataFragment.newInstance();
+		discoveryFragment = new DiscoveryFragment();
 		mFragments = new Fragment[]{meFragment, dataFragment, new DiscoveryFragment(), new VideoFragment()};
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), mFragments);
 		vp_main.setAdapter(adapter);
 		vp_main.setCurrentItem(0);
 		rb_main[0].setChecked(true);
+		new DataPresenter(dataFragment);
 	}
 
 	private void addListener(){
@@ -85,7 +91,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 			case R.id.rb_home:
 				vp_main.setCurrentItem(1);
 				tv_toolbar.setText(getResources().getString(R.string.data));
-				new DataPresenter(dataFragment);
 				break;
 			case R.id.rb_discovery:
 				vp_main.setCurrentItem(2);
@@ -105,9 +110,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
 	@Override
 	public void onPageSelected(int position) {
-//		for(int i = 0; i <= position; i++){
-//
-//		}
 		rb_main[position].setChecked(true);
 	}
 
