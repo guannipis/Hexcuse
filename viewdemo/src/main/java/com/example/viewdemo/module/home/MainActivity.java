@@ -13,6 +13,7 @@ import com.example.viewdemo.common.base.BaseFragmentActivity;
 import com.example.viewdemo.module.home.data.DataFragment;
 import com.example.viewdemo.module.home.data.DataPresenter;
 import com.example.viewdemo.module.home.discovery.DiscoveryFragment;
+import com.example.viewdemo.module.home.discovery.DiscoveryPresenter;
 import com.example.viewdemo.module.home.me.MeFragment;
 import com.example.viewdemo.module.home.viedo.VideoFragment;
 
@@ -63,13 +64,14 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 	private void initViewPager(){
 		meFragment = MeFragment.newInstance();
 		dataFragment = DataFragment.newInstance();
-		discoveryFragment = new DiscoveryFragment();
-		mFragments = new Fragment[]{meFragment, dataFragment, new DiscoveryFragment(), new VideoFragment()};
+		discoveryFragment = DiscoveryFragment.newInstance();
+		mFragments = new Fragment[]{meFragment, dataFragment, discoveryFragment, new VideoFragment()};
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), mFragments);
 		vp_main.setAdapter(adapter);
 		vp_main.setCurrentItem(0);
 		rb_main[0].setChecked(true);
 		new DataPresenter(dataFragment);
+		new DiscoveryPresenter(discoveryFragment);
 	}
 
 	private void addListener(){
@@ -99,6 +101,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 			case R.id.rb_video:
 				vp_main.setCurrentItem(3);
 				tv_toolbar.setText(getResources().getString(R.string.video));
+				mToolbar.setNavigationIcon(null);
 				break;
 		}
 	}

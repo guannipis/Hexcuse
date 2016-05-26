@@ -51,6 +51,7 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 		this.datas.clear();
 		if(mDatas != null && mDatas.size() > 0){
 			this.datas.addAll(mDatas);
+			DiscoveryRecyclerViewAdapter.this.notifyDataSetChanged();
 		}
 
 	}
@@ -89,6 +90,7 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 			ImageManager.setBitmap(((MyHolderView) holder).iv_discovery, url);
 		}else if(holder instanceof FullHolderView){
 			String url = datas.get(position).getImgs().get(0);
+			((FullHolderView) holder).tv_fullmap.setText(datas.get(position).getTitle());
 			((FullHolderView)holder).iv_discovery.setTag(url);
 			((FullHolderView) holder).iv_discovery.setImageBitmap(null);
 			ImageManager.setBitmap(((FullHolderView) holder).iv_discovery, url);
@@ -123,10 +125,12 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 	class FullHolderView extends RecyclerView.ViewHolder {
 
 		private ImageView iv_discovery;
+		private TextView tv_fullmap;
 
 		public FullHolderView(View itemView) {
 			super(itemView);
 			iv_discovery = (ImageView)itemView.findViewById(R.id.iv_full);
+			tv_fullmap = (TextView)itemView.findViewById(R.id.tv_fullmap);
 		}
 	}
 }

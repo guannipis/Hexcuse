@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @Package ${package_name}.${file_name}.
  * @ClassName: ${type_name}.
- * @Description: ${todo}(用一句话描述该文件做什么).
+ * @Description: ${todo}(DataFragment的presenter类).
  */
 public class DataPresenter implements DataContract.Presenter {
 
@@ -38,6 +38,9 @@ public class DataPresenter implements DataContract.Presenter {
 		getListViewData();
 	}
 
+	/**
+	 * 请求网络获取数据
+	 */
 	@Override
 	public void getListViewData() {
 		OkHttpUtils.get().url(Constants.Data_URL).build().execute(new StringCallback() {
@@ -71,12 +74,19 @@ public class DataPresenter implements DataContract.Presenter {
 		});
 	}
 
+	/**
+	 * 刷新数据
+	 */
 	@Override
 	public void refreshListView() {
 		getListViewData();
 		mDataView.refreshComplete();
 	}
 
+	/**
+	 * ListView的点击事件
+	 * @param position
+	 */
 	@Override
 	public void onItemClick(int position) {
 //		mDataView.toActivity();

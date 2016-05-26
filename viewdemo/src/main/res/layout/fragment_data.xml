@@ -211,7 +211,7 @@
 
                 </LinearLayout>
 
-                <include layout="@layout/band"/>
+                <include layout="@layout/band2"/>
 
                 <com.example.viewdemo.common.view.ListViewForScrollView
                     android:id="@+id/data_lv"

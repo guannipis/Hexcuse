@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.base.BaseFragment;
@@ -34,6 +35,7 @@ public class DataFragment extends BaseFragment implements View.OnClickListener, 
 	private LinearLayout ll_league;
 	private ListView data_lv;
 	private DataLvAdapter mDataLvAdapter;
+	private TextView tv_band2_title;
 
 	private DataContract.Presenter mPresenter;
 
@@ -67,6 +69,7 @@ public class DataFragment extends BaseFragment implements View.OnClickListener, 
 	}
 
 	private void initView() {
+		tv_band2_title = (TextView) contentView.findViewById(R.id.tv_band2_title);
 		mPtrFrameLayout = (PtrFrameLayout) contentView.findViewById(R.id.ptrframe);
 		ll_hero = (LinearLayout) contentView.findViewById(R.id.ll_hero);
 		ll_rank = (LinearLayout) contentView.findViewById(R.id.ll_rank);
@@ -75,6 +78,7 @@ public class DataFragment extends BaseFragment implements View.OnClickListener, 
 		ll_data = (LinearLayout) contentView.findViewById(R.id.ll_data);
 		ll_league = (LinearLayout) contentView.findViewById(R.id.ll_league);
 		data_lv = (ListView) contentView.findViewById(R.id.data_lv);
+		tv_band2_title.setText(R.string.thematic);
 		initPtr();
 	}
 

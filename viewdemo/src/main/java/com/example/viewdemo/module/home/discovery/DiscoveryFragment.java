@@ -7,22 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.base.BaseFragment;
-import com.example.viewdemo.common.bean.Constants;
 import com.example.viewdemo.common.bean.DiscoveryBean;
-import com.example.viewdemo.module.home.discovery.DiscoveryRecyclerViewAdapter;
-import com.squareup.okhttp.Request;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -30,11 +20,12 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Created by llbt on 2016/4/22.
  */
-public class DiscoveryFragment extends BaseFragment {
+public class DiscoveryFragment extends BaseFragment implements DiscoveryContract.DiscoveryView{
 
 	private PtrFrameLayout mPtrFrameLayout;
 	private View convertView;
-	private List<DiscoveryBean.ResultBean> datas;
+	private TextView tv_band_title;
+	private DiscoveryContract.DiscoveryPresenter mPresenter;
 
 	/**
 	 * ListView的实现方式
@@ -48,6 +39,23 @@ public class DiscoveryFragment extends BaseFragment {
 	private RecyclerView rv_discovery;
 	private DiscoveryRecyclerViewAdapter mDiscoveryRecyclerViewAdapte;
 
+	/**
+	 * 得到Fragment的实例
+	 * @return
+	 */
+	public static DiscoveryFragment newInstance(){
+		return new DiscoveryFragment();
+	}
+
+	public DiscoveryFragment(){
+
+	}
+
+	@Override
+	public void setPresenter(DiscoveryContract.DiscoveryPresenter presenter) {
+		this.mPresenter = presenter;
+	}
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,15 +64,29 @@ public class DiscoveryFragment extends BaseFragment {
 		return convertView;
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		mPresenter.start();
+	}
+
 	private void initView() {
 		mPtrFrameLayout = (PtrFrameLayout) convertView.findViewById(R.id.ptrframe);
 		rv_discovery = (RecyclerView)convertView.findViewById(R.id.rv_discovery);
+		tv_band_title = (TextView) convertView.findViewById(R.id.tv_band_title);
 		mDiscoveryRecyclerViewAdapte = new DiscoveryRecyclerViewAdapter(getActivity().getApplicationContext());
 		rv_discovery.setLayoutManager(new LinearLayoutManager(getActivity()));
+		tv_band_title.setText(R.string.news);
+		initPtr();
+	}
+
+	/**
+	 * 初始化下拉刷新控件
+	 */
+	private void initPtr(){
 //		lv_discovery = (ListView) convertView.findViewById(R.id.lv_discovery);
 //		mDiscoveryListViewAdapter = new DiscoveryListViewAdapter(getActivity().getApplicationContext());
 		mPtrFrameLayout.setPtrHandler(this);
-		getData();
 	}
 
 	/**
@@ -90,59 +112,33 @@ public class DiscoveryFragment extends BaseFragment {
 
 	@Override
 	public void onRefreshBegin(PtrFrameLayout frame) {
-		if (mDiscoveryRecyclerViewAdapte == null) {
-			getData();
-		} else {
-			getData();
-			mDiscoveryRecyclerViewAdapte.notifyDataSetChanged();
-		}
-		frame.refreshComplete();
+		mPresenter.refreshData();
 	}
 
-	private void getData() {
-		OkHttpUtils.get().url(Constants.Discovery_URL).build().execute(new StringCallback() {
-			@Override
-			public void onError(Request request, Exception e) {
+	/**
+	 * 展示recyclerView的数据
+	 * @param datas
+	 */
+	@Override
+	public void showRecyclerView(List<DiscoveryBean.ResultBean> datas) {
+		mDiscoveryRecyclerViewAdapte.setDatas(datas);
+        rv_discovery.setAdapter(mDiscoveryRecyclerViewAdapte);
+	}
 
-			}
+	/**
+	 * 显示信息，包括提示信息，错误信息等
+	 * @param message
+	 */
+	@Override
+	public void showMessage(String message) {
 
-			@Override
-			public void onResponse(String response) {
-				try {
-					datas = new ArrayList<DiscoveryBean.ResultBean>();
-					JSONArray array = new JSONObject(response).getJSONArray("result");
-					for (int i = 0; i < array.length(); i++) {
-						DiscoveryBean.ResultBean bean = new DiscoveryBean.ResultBean();
-						bean.setTitle(array.getJSONObject(i).getString("title"));
-						bean.setImg_type(array.getJSONObject(i).getInt("img_type"));
-						JSONArray urlArray = array.getJSONObject(i).getJSONArray("imgs");
-						List<String> stringList = new ArrayList<>();
-						for (int j = 0; j < urlArray.length(); j++) {
-							stringList.add(urlArray.getString(j));
-							bean.setImgs(stringList);
-						}
-						datas.add(bean);
-					}
+	}
 
-//					mDiscoveryListViewAdapter.setDatas(datas);
-//					lv_discovery.setAdapter(mDiscoveryListViewAdapter);
-					mDiscoveryRecyclerViewAdapte.setDatas(datas);
-					rv_discovery.setAdapter(mDiscoveryRecyclerViewAdapte);
-					mDiscoveryRecyclerViewAdapte.setOnItemClickLitener(new DiscoveryRecyclerViewAdapter.onItemClickListener() {
-						@Override
-						public void onItemClick(View view, int position) {
-							Toast.makeText(getActivity().getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
-						}
-
-						@Override
-						public void onItemLongClick(View view, int position) {
-
-						}
-					});
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	/**
+	 * 刷新数据
+	 */
+	@Override
+	public void refreshComplete() {
+		mPtrFrameLayout.refreshComplete();
 	}
 }

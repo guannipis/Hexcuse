@@ -1,7 +1,6 @@
 package com.example.viewdemo.module.home.data;
 
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.base.BaseActivity;
@@ -14,8 +13,6 @@ import com.example.viewdemo.common.base.BaseActivity;
  * @Description: ${todo}(用一句话描述该文件做什么).
  */
 public class HeroActivity extends BaseActivity {
-
-	private TextView tv_band_title;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

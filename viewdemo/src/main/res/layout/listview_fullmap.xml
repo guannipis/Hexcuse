@@ -10,7 +10,16 @@
         android:id="@+id/iv_full"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:scaleType="centerCrop"
-        />
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/tv_fullmap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:layout_marginBottom="35dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"/>
 
 </FrameLayout>
