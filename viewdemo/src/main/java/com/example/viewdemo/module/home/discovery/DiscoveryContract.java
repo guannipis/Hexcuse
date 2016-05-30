@@ -23,6 +23,8 @@ public interface DiscoveryContract {
 
 		void refreshComplete();
 
+		void toNewsActivity(String url);
+
 	}
 
 	interface DiscoveryPresenter extends BasePresenter{
@@ -30,8 +32,6 @@ public interface DiscoveryContract {
 		void getRecyclerView();
 
 		void refreshData();
-
-		void onItemClick();
 
 	}
 

@@ -51,6 +51,7 @@ public class DiscoveryPresenter implements DiscoveryContract.DiscoveryPresenter{
 					for (int i = 0; i < array.length(); i++) {
 						DiscoveryBean.ResultBean bean = new DiscoveryBean.ResultBean();
 						bean.setTitle(array.getJSONObject(i).getString("title"));
+						bean.setNewUrl(array.getJSONObject(i).getString("newUrl"));
 						if (!array.getJSONObject(i).isNull("img_type")) {
 							bean.setImg_type(array.getJSONObject(i).getInt("img_type"));
 						}
@@ -76,8 +77,4 @@ public class DiscoveryPresenter implements DiscoveryContract.DiscoveryPresenter{
 		mDiscoveryView.refreshComplete();
 	}
 
-	@Override
-	public void onItemClick() {
-
-	}
 }

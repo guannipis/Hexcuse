@@ -20,7 +20,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Created by llbt on 2016/4/22.
  */
-public class DiscoveryFragment extends BaseFragment implements DiscoveryContract.DiscoveryView{
+public class DiscoveryFragment extends BaseFragment implements DiscoveryContract.DiscoveryView {
 
 	private PtrFrameLayout mPtrFrameLayout;
 	private View convertView;
@@ -120,9 +120,22 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
 	 * @param datas
 	 */
 	@Override
-	public void showRecyclerView(List<DiscoveryBean.ResultBean> datas) {
+	public void showRecyclerView(final List<DiscoveryBean.ResultBean> datas) {
 		mDiscoveryRecyclerViewAdapte.setDatas(datas);
         rv_discovery.setAdapter(mDiscoveryRecyclerViewAdapte);
+		mDiscoveryRecyclerViewAdapte.setOnItemClickLitener(new DiscoveryRecyclerViewAdapter.onItemClickListener(){
+
+			@Override
+			public void onItemClick(View view, int position) {
+				String url = datas.get(position).getNewUrl();
+				toNewsActivity(url);
+			}
+
+			@Override
+			public void onItemLongClick(View view, int position) {
+
+			}
+		});
 	}
 
 	/**
@@ -141,4 +154,10 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
 	public void refreshComplete() {
 		mPtrFrameLayout.refreshComplete();
 	}
+
+	@Override
+	public void toNewsActivity(String url) {
+		NewsActivity.startNewsActivity(getActivity().getApplicationContext(), url);
+	}
+
 }
