@@ -1,5 +1,6 @@
 package com.example.viewdemo.common.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -166,7 +167,7 @@ public class DiscoveryBean {
 		}
 	}
 
-	public static class ResultBean {
+	public static class ResultBean implements Serializable{
 		private int click;
 		private int content_type;
 		private String create_at;

@@ -127,8 +127,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
 
 			@Override
 			public void onItemClick(View view, int position) {
-				String url = datas.get(position).getNewUrl();
-				toNewsActivity(url);
+				toNewsActivity(datas.get(position));
 			}
 
 			@Override
@@ -156,8 +155,8 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
 	}
 
 	@Override
-	public void toNewsActivity(String url) {
-		NewsActivity.startNewsActivity(getActivity().getApplicationContext(), url);
+	public void toNewsActivity(DiscoveryBean.ResultBean resultBean) {
+		NewsActivity.startNewsActivity(getActivity(), resultBean);
 	}
 
 }

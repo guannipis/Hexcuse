@@ -24,6 +24,10 @@
             android:name=".module.home.data.HeroActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".module.home.discovery.NewsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"/>
 
     </application>
 

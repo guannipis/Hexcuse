@@ -23,7 +23,7 @@ public interface DiscoveryContract {
 
 		void refreshComplete();
 
-		void toNewsActivity(String url);
+		void toNewsActivity(DiscoveryBean.ResultBean resultBean);
 
 	}
 
