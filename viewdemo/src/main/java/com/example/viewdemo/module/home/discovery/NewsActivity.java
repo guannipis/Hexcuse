@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.viewdemo.R;
 import com.example.viewdemo.common.base.BaseActivity;
@@ -19,10 +20,12 @@ import com.example.viewdemo.utils.ImageManager;
  * @ClassName: ${type_name}.
  * @Description: ${todo}(用一句话描述该文件做什么).
  */
-public class NewsActivity extends BaseActivity {
+public class NewsActivity extends BaseActivity implements NewsContract.NewsView{
 
-	private TextView tv_title;
 	private ImageView iv_title;
+	private WebView news_web;
+
+	private NewsContract.NewsPresenter mNewsPresenter;
 
 	private CollapsingToolbarLayout mCollapsingToolbarLayout;
 
@@ -43,12 +46,28 @@ public class NewsActivity extends BaseActivity {
 		Intent intent = getIntent();
 		DiscoveryBean.ResultBean resultBean = (DiscoveryBean.ResultBean) intent.getSerializableExtra("resultBean");
 		iv_title = (ImageView)findViewById(R.id.ivImage);
+		news_web = (WebView)findViewById(R.id.news_web);
 		mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 		mCollapsingToolbarLayout.setTitle(resultBean.getTitle());
-		mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.White));
-		mCollapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.white));
+		mCollapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedTitleStyle);
+		mCollapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedTitleStyle);
 		String url = resultBean.getImgs().get(0);
 		iv_title.setTag(url);
 		ImageManager.setBitmap(iv_title, url);
+		mNewsPresenter = new NewsPresenter(getApplicationContext(), this);
+		mNewsPresenter.loadNews();
+		news_web.loadUrl(url);
+		news_web.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+		news_web.getSettings().setLoadWithOverviewMode(true);
+	}
+
+	@Override
+	public void showNews() {
+
+	}
+
+	@Override
+	public void setPresenter(NewsContract.NewsPresenter presenter) {
+
 	}
 }
