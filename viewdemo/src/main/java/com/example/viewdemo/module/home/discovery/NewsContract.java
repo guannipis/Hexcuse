@@ -14,12 +14,12 @@ public class NewsContract {
 
 	interface NewsView extends BaseView<NewsPresenter>{
 
-		void showNews();
+		void showNews(String newsDetailContent);
 
 	}
 
 	interface NewsPresenter extends BasePresenter{
 
-		void loadNews();
+		void loadNews(String url);
 	}
 }

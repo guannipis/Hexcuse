@@ -86,6 +86,8 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 			String url = datas.get(position).getImgs().get(0);
 			((MyHolderView)holder).tv_title.setText(datas.get(position).getTitle());
 			((MyHolderView)holder).iv_discovery.setTag(url);
+			((MyHolderView) holder).tv_read.setText(String.valueOf(datas.get(position).getClick()));
+			((MyHolderView) holder).tv_time.setText(datas.get(position).getDate());
 			((MyHolderView) holder).iv_discovery.setImageBitmap(null);
 			ImageManager.setBitmap(((MyHolderView) holder).iv_discovery, url);
 		}else if(holder instanceof FullHolderView){
@@ -102,6 +104,13 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 			}
 		});
 
+		holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View view) {
+				mOnItemClickListener.onItemLongClick(holder.itemView, holder.getLayoutPosition());
+				return true;
+			}
+		});
 	}
 
 
@@ -114,11 +123,15 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 
 		private ImageView iv_discovery;
 		private TextView tv_title;
+		private TextView tv_time;
+		private TextView tv_read;
 
 		public MyHolderView(View itemView) {
 			super(itemView);
 			iv_discovery = (ImageView)itemView.findViewById(R.id.iv_discovery);
 			tv_title = (TextView)itemView.findViewById(R.id.tv_title);
+			tv_time = (TextView)itemView.findViewById(R.id.tv_time);
+			tv_read = (TextView)itemView.findViewById(R.id.tv_read);
 		}
 	}
 

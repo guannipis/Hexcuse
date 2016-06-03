@@ -55,6 +55,9 @@ public class DiscoveryPresenter implements DiscoveryContract.DiscoveryPresenter{
 						if (!array.getJSONObject(i).isNull("img_type")) {
 							bean.setImg_type(array.getJSONObject(i).getInt("img_type"));
 						}
+						bean.setClick(array.getJSONObject(i).getInt("click"));
+						bean.setDate(array.getJSONObject(i).getString("date"));
+						bean.setNewUrl(array.getJSONObject(i).getString("newUrl"));
 						JSONArray urlArray = array.getJSONObject(i).getJSONArray("imgs");
 						List<String> stringList = new ArrayList<>();
 						for (int j = 0; j < urlArray.length(); j++) {

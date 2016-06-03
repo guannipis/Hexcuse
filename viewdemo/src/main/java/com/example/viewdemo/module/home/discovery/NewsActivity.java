@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
@@ -54,16 +53,14 @@ public class NewsActivity extends BaseActivity implements NewsContract.NewsView{
 		String url = resultBean.getImgs().get(0);
 		iv_title.setTag(url);
 		ImageManager.setBitmap(iv_title, url);
-		mNewsPresenter = new NewsPresenter(getApplicationContext(), this);
-		mNewsPresenter.loadNews();
-		news_web.loadUrl(url);
-		news_web.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-		news_web.getSettings().setLoadWithOverviewMode(true);
+		news_web.loadUrl(resultBean.getNewUrl());
+//		mNewsPresenter = new NewsPresenter(getApplicationContext(), this);
+//		mNewsPresenter.loadNews(resultBean.getNewUrl());
 	}
 
 	@Override
-	public void showNews() {
-
+	public void showNews(String newsDetailContent) {
+//		news_web.setHtmlFromString(newsDetailContent, new HtmlTextView.RemoteImageGetter());
 	}
 
 	@Override

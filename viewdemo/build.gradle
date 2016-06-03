@@ -29,4 +29,5 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.squareup.okio:okio:1.5.0'
     compile 'com.zhy:okhttputils:2.0.0'
+    compile 'org.sufficientlysecure:html-textview:1.6'
 }

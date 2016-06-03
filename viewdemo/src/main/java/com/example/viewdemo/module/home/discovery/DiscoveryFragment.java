@@ -2,6 +2,7 @@ package com.example.viewdemo.module.home.discovery;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -132,7 +133,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
 
 			@Override
 			public void onItemLongClick(View view, int position) {
-
+				Snackbar.make(view, position + "", Snackbar.LENGTH_SHORT).show();
 			}
 		});
 	}
