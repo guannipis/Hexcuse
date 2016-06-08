@@ -132,6 +132,7 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 			tv_title = (TextView)itemView.findViewById(R.id.tv_title);
 			tv_time = (TextView)itemView.findViewById(R.id.tv_time);
 			tv_read = (TextView)itemView.findViewById(R.id.tv_read);
+			setListener(itemView);
 		}
 	}
 
@@ -144,7 +145,24 @@ public class DiscoveryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 			super(itemView);
 			iv_discovery = (ImageView)itemView.findViewById(R.id.iv_full);
 			tv_fullmap = (TextView)itemView.findViewById(R.id.tv_fullmap);
+			setListener(itemView);
 		}
+	}
+
+	private void setListener(View v){
+		v.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mOnItemClickListener.onItemClick(v, );
+			}
+		});
+
+		v.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View view) {
+				return true;
+			}
+		});
 	}
 }
 

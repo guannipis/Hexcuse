@@ -11,6 +11,7 @@ import com.example.viewdemo.R;
 import com.example.viewdemo.common.base.BaseActivity;
 import com.example.viewdemo.common.bean.DiscoveryBean;
 import com.example.viewdemo.utils.ImageManager;
+import com.example.viewdemo.utils.ToolUtils;
 
 /**
  * Created by Hexcuse on 2016/5/30.
@@ -51,9 +52,10 @@ public class NewsActivity extends BaseActivity implements NewsContract.NewsView{
 		mCollapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedTitleStyle);
 		mCollapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedTitleStyle);
 		String url = resultBean.getImgs().get(0);
+		String version = ToolUtils.getVersion(getApplicationContext());
 		iv_title.setTag(url);
 		ImageManager.setBitmap(iv_title, url);
-		news_web.loadUrl(resultBean.getNewUrl());
+		news_web.loadUrl(resultBean.getNewUrl() + "?&version=" + version);
 //		mNewsPresenter = new NewsPresenter(getApplicationContext(), this);
 //		mNewsPresenter.loadNews(resultBean.getNewUrl());
 	}
